@@ -1,0 +1,67 @@
+{
+	"name": "vscode-f5-chariot",
+	"displayName": "F5 Chariot",
+	"description": "ACC integration",
+	"version": "0.0.1",
+	"publisher": "DumpySquare",
+	"repository": "https://github.com/DevCentral/vscode-f5-chariot",
+	"engines": {
+		"vscode": "^1.34.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:f5.chariot.convert"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "f5-chariot",
+			"properties": {
+				"f5.chariot.dockerImage": {
+					"type": "string",
+					"description": "docker image to run",
+					"default": "f5-appsvcs-charon:1.7.0"
+				},
+				"f5.chariot.outFileName": {
+					"type": "string",
+					"description": "output file name",
+					"default": "converted.as3.json"
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "f5.chariot.convert",
+				"title": "chariot Convert",
+				"category": "F5"
+			}
+		],
+		"menus": {
+			"editor/context": [
+				{
+					"command": "f5.chariot.convert",
+					"group": "F5"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint . --ext .ts,.tsx",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/node": "^12.12.0",
+		"@types/vscode": "^1.34.0",
+		"@typescript-eslint/eslint-plugin": "^3.0.2",
+		"@typescript-eslint/parser": "^3.0.2",
+		"eslint": "^7.1.0",
+		"typescript": "^4.0.2"
+	},
+	"dependencies": {
+		"vsce": "^1.81.1"
+	}
+}

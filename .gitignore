@@ -1,0 +1,11 @@
+# converted ts
+out
+
+# node/modules install directory
+node_modules
+
+.vscode-test/
+# installable extension packages
+*.vsix
+# user app data for npm?
+*AppDataRoamingnpm
