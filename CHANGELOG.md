@@ -6,6 +6,14 @@ All notable changes to the "vscode-f5-chariot" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+
+---
+
+## [0.3.0] - (10-26-2020)
+
+### Added
+- Added progress bar for the main "Chariot Convert" command to indicate status
+
 ---
 
 ## [0.2.0] - (10-20-2020)
