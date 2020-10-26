@@ -10,8 +10,8 @@ class Log {
         this._outputChannel.show();
     }
 
-    makeVisible () {
-        this._outputChannel.show();
+    async makeVisible () {
+        return this._outputChannel.show(true);
     }
 
     /**

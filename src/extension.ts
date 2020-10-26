@@ -5,7 +5,7 @@ import * as os from 'os';
 import * as cp from 'child_process';
 import ChildProcess = cp.ChildProcess;
 
-import { window, ExtensionContext, commands, workspace, Uri } from 'vscode';
+import { window, ExtensionContext, commands, workspace, Uri, ProgressLocation } from 'vscode';
 
 import logger from './logger';
 
@@ -26,64 +26,73 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.convert', async () => {
 
-        const extPath = path.join(__dirname, '../');
-        let wkspce = workspace.rootPath;
-        const image = workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.7.0');
-        const outputFile = workspace.getConfiguration().get('f5.chariot.outFileName', 'converted.as3.json');
+        window.withProgress({
+            location: ProgressLocation.Notification,
+            title: `Converting with ACC`,
+            cancellable: true
+        }, async () => {
+                
+            const extPath = path.join(__dirname, '../');
+            let wkspce = workspace.rootPath;
+            const image = workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.7.0');
+            const outputFile = workspace.getConfiguration().get('f5.chariot.outFileName', 'converted.as3.json');
 
-        logger.makeVisible();   // make log OUTPUT visible again...
+            await logger.makeVisible();   // make log OUTPUT visible again...
 
-        logger.debug(`Host OS: ${os.type()}, Platform: ${os.platform()}, Release: ${os.release()}, UserInfo: ${JSON.stringify(os.userInfo())}`);
+            logger.debug(`Host OS: ${os.type()}, Platform: ${os.platform()}, Release: ${os.release()}, UserInfo: ${JSON.stringify(os.userInfo())}`);
+            
+            // get editor window
+            const editor = window.activeTextEditor;
+            if (!editor) {
+                logger.error('no open editor - exiting');
+                return;
+            }
+            if (!wkspce) {
+                // if no open workspace, should make the user open a workspace,
+                // but for now we just fallback to using the extension path
+                wkspce = extPath;
+                logger.debug(`no open workspace detected, will try to place files in extension base path`);
+            } else {
+                logger.debug(`detected open vscode workspace of ${wkspce}, will use this workspace for files location`);
+            }
 
-        // get editor window
-        const editor = window.activeTextEditor;
-        if (!editor) {
-            logger.error('no open editor - exiting');
-            return;
-        }
-        if (!wkspce) {
-            // if no open workspace, should make the user open a workspace,
-            // but for now we just fallback to using the extension path
-            wkspce = extPath;
-            logger.debug(`no open workspace detected, will try to place files in extension base path`);
-        } else {
-            logger.debug(`detected open vscode workspace of ${wkspce}, will use this workspace for files location`);
-        }
+            // capture selected text or all text in editor
+            let text: string;
+            if (editor.selection.isEmpty) {
+                text = editor.document.getText();	// entire editor/doc window
+                logger.debug('got entire editor text');
+            } else {
+                text = editor.document.getText(editor.selection);	// highlighted text
+                logger.debug('got selected text in editor');
+            }
 
-        // capture selected text or all text in editor
-        let text: string;
-        if (editor.selection.isEmpty) {
-            text = editor.document.getText();	// entire editor/doc window
-            logger.debug('got entire editor text');
-        } else {
-            text = editor.document.getText(editor.selection);	// highlighted text
-            logger.debug('got selected text in editor');
-        }
+            const inputFile = 'toConvert.conf';
+            const inputFilePath = path.join(wkspce, inputFile);
+            const outputFilePath = path.join(wkspce, outputFile);
 
-        const inputFile = 'toConvert.conf';
-        const inputFilePath = path.join(wkspce, inputFile);
-        const outputFilePath = path.join(wkspce, outputFile);
+            fs.writeFileSync(inputFilePath, text);
+            logger.debug('writing text to file: ', inputFilePath);
 
-        fs.writeFileSync(inputFilePath, text);
-        logger.debug('writing text to file: ', inputFilePath);
+            // build/append docker command
+            let rund = `docker run --rm -v `;                   // base docker command
+            rund += `${wkspce}:/app/data `;                     // volume mount
+            rund += `${image} `;                                // image definition
+            rund += `-o data/${outputFile} `;                   // output file definition
+            rund += `-c data/${inputFile} `;                    // input file definition
+            rund += `--unsupported `;                           // logs configuration objects that ACC did notconvert
+            rund += `--unsupported-objects unSupported.json`;   // logs to file objects not converted
+            logger.debug('Issuing docker command: ', rund);
 
-        // build/append docker command
-        let rund = `docker run --rm -v `;                   // base docker command
-        rund += `${wkspce}:/app/data `;                     // volume mount
-        rund += `${image} `;                                // image definition
-        rund += `-o data/${outputFile} `;                   // output file definition
-        rund += `-c data/${inputFile} `;                    // input file definition
-        rund += `--unsupported `;                           // logs configuration objects that ACC did notconvert
-        rund += `--unsupported-objects unSupported.json`;   // logs to file objects not converted
-        logger.debug('Issuing docker command: ', rund);
+            const resp4 = cp.execSync(rund).toString();
+            logger.debug(`Process complete, output: \n\n${resp4}`);
 
-        const resp4 = cp.execSync(rund).toString();
-        logger.debug(`Process complete, output: \n\n${resp4}`);
+            logger.debug('Opening output file: ', outputFilePath);
+            const openPath = Uri.parse(outputFilePath);
+            workspace.openTextDocument(openPath).then(doc => {
+                window.showTextDocument(doc);
+            });
 
-        logger.debug('Opening output file: ', outputFilePath);
-        const openPath = Uri.parse(outputFilePath);
-        workspace.openTextDocument(openPath).then(doc => {
-            window.showTextDocument(doc);
+            // todo: delete files when done, converted.as3.json and unSupported.json
         });
     }));
 
@@ -131,8 +140,18 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(commands.registerCommand('f5.chariot.settings', () => {
 		//	open settings window and bring the user to the F5 section
 		return commands.executeCommand("workbench.action.openSettings", "f5-chariot");
-	}));
+    }));
+    
 
+
+}
+
+
+async function detectDocker() {
+
+    // function to detect if docker is actually running 
+    // was gonna just look for a response to the following
+    // curl --unix-socket /var/run/docker.sock http:/v1.24/images/json
 }
 
 
