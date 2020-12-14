@@ -1,9 +1,9 @@
 {
 	"name": "vscode-f5-chariot",
 	"displayName": "F5 Chariot",
-	"description": "ACC integration",
-	"version": "0.3.0",
-	"publisher": "DumpySquare",
+	"description": "(ACC) AS3 Configuration Converter integration",
+	"version": "0.4.0",
+	"publisher": "F5DevCentral",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/f5devcentral/vscode-f5-chariot"
@@ -26,12 +26,20 @@
 				"f5.chariot.dockerImage": {
 					"type": "string",
 					"description": "docker image to run",
-					"default": "f5-appsvcs-charon:1.7.0"
+					"default": "f5-appsvcs-charon:1.8.0"
 				},
 				"f5.chariot.outFileName": {
 					"type": "string",
 					"description": "output file name",
 					"default": "converted.as3.json"
+				},
+				"f5.chariot.fullCommand": {
+					"type": "string",
+					"description": "Full docker command: to allow full control of how docker is executed.  Default=blank.  This setting will superceed all other docker command attributes.  Be sure output file name in this setting matches the \"Out File Name\" setting.  One is for docker command execution, the other is for vscode to open the file in an editor.",
+					"default": "",
+					"examples": [
+						"docker run --rm -v \"/Users/SomeUser/acc\":/app/data f5-appsvcs-charon:1.8.0 -o data/converted.as3.json -c data/toConvert.conf --unsupported --unsupported-objects unSupported.json"
+					]
 				}
 			}
 		},

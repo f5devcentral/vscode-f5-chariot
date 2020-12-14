@@ -1,6 +1,8 @@
 # vscode-f5-chariot
 
-This is an integration with ACC(Charon) to provide quick conversions within vscode
+This is an integration with ACC(Charon) to provide quick conversions within vscode.
+
+This extension requires that ACC already be installed and accessable via the command line
 
 The .vsix to install this can be found in the releases section.
 

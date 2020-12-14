@@ -9,6 +9,20 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [0.4.0] - (12-14-2020)
+
+### Added
+- Added configuration option to specify entire docker command string
+    - This should provide complete flexibility for getting the command to execute on different systems
+    - And control the different ACC processing outputs that are now available with v1.8
+- Added catching and logging of all errors from docker command execution
+    - This should provide full visibility into all execution output
+
+### Modified
+- Updated default ACC version to latest 1.8
+
+---
+
 ## [0.3.0] - (10-26-2020)
 
 ### Added

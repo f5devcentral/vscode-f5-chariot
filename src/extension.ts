@@ -36,6 +36,7 @@ export function activate(context: ExtensionContext) {
             let wkspce = workspace.rootPath;
             const image = workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.7.0');
             const outputFile = workspace.getConfiguration().get('f5.chariot.outFileName', 'converted.as3.json');
+            const fullCmd = workspace.getConfiguration().get('f5.chariot.fullCommand', '');
 
             await logger.makeVisible();   // make log OUTPUT visible again...
 
@@ -81,16 +82,34 @@ export function activate(context: ExtensionContext) {
             rund += `-c data/${inputFile} `;                    // input file definition
             rund += `--unsupported `;                           // logs configuration objects that ACC did notconvert
             rund += `--unsupported-objects unSupported.json`;   // logs to file objects not converted
+
+            // overwrite above string if we have fullCmd from settings
+            rund = fullCmd ? fullCmd : rund;
+
+            // remove any escaped "
+            rund = rund.replace(/(\\"|\\\\")/g, '"');
+
             logger.debug('Issuing docker command: ', rund);
 
-            const resp4 = cp.execSync(rund).toString();
-            logger.debug(`Process complete, output: \n\n${resp4}`);
+            try {
+                // try to execute command and display the results in an editor
+                const resp4 = cp.execSync(rund).toString();
+                
+                logger.debug(`Process complete, output: \n\n${resp4}`);
+                logger.debug('Opening output file: ', outputFilePath);
+                
+                const openPath = Uri.parse(outputFilePath);
 
-            logger.debug('Opening output file: ', outputFilePath);
-            const openPath = Uri.parse(outputFilePath);
-            workspace.openTextDocument(openPath).then(doc => {
-                window.showTextDocument(doc);
-            });
+                workspace.openTextDocument(openPath)
+                .then(doc => {
+                    window.showTextDocument(doc);
+                });
+
+            } catch (e) {
+                // catch all errors from command execution
+                logger.debug(`Docker command failed, output,`, e);
+            }
+
 
             // todo: delete files when done, converted.as3.json and unSupported.json
         });
