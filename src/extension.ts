@@ -103,6 +103,8 @@ export function activate(context: ExtensionContext) {
             logger.debug('Issuing docker command: ', rund);
             await new Promise(r => setTimeout(r, 500));
 
+            text = text.replace(/\r\n/g, '\n');
+
             try {
 
                 // try to execute command and display the results in an editor
