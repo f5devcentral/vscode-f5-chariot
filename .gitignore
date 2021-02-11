@@ -9,3 +9,6 @@ node_modules
 *.vsix
 # user app data for npm?
 *AppDataRoamingnpm
+# exclude input/output files for file workflow
+toConvert.conf
+converted.as3.json

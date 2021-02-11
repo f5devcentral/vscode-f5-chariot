@@ -1,9 +1,20 @@
+/*
+ * Copyright 2020. F5 Networks, Inc. See End User License Agreement ("EULA") for
+ * license terms. Notwithstanding anything to the contrary in the EULA, Licensee
+ * may copy and modify this software product for its internal business purposes.
+ * Further, Licensee may upload, publish and distribute the modified version of
+ * the software product on devcentral.f5.com.
+ */
+
+'use strict';
 
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 import * as cp from 'child_process';
 import ChildProcess = cp.ChildProcess;
+
+import * as Docker from 'dockerode';
 
 import { window, ExtensionContext, commands, workspace, Uri, ProgressLocation } from 'vscode';
 
@@ -31,17 +42,17 @@ export function activate(context: ExtensionContext) {
             title: `Converting with ACC`,
             cancellable: true
         }, async () => {
-                
-            const extPath = path.join(__dirname, '../');
+
+            const extPath = path.join(__dirname, '..');
             let wkspce = workspace.rootPath;
-            const image = workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.7.0');
+            const image = workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.8.0');
             const outputFile = workspace.getConfiguration().get('f5.chariot.outFileName', 'converted.as3.json');
             const fullCmd = workspace.getConfiguration().get('f5.chariot.fullCommand', '');
 
             await logger.makeVisible();   // make log OUTPUT visible again...
 
             logger.debug(`Host OS: ${os.type()}, Platform: ${os.platform()}, Release: ${os.release()}, UserInfo: ${JSON.stringify(os.userInfo())}`);
-            
+
             // get editor window
             const editor = window.activeTextEditor;
             if (!editor) {
@@ -90,20 +101,24 @@ export function activate(context: ExtensionContext) {
             rund = rund.replace(/(\\"|\\\\")/g, '"');
 
             logger.debug('Issuing docker command: ', rund);
+            await new Promise(r => setTimeout(r, 500));
 
             try {
+
                 // try to execute command and display the results in an editor
                 const resp4 = cp.execSync(rund).toString();
-                
+
+                await new Promise(r => setTimeout(r, 500));
+
                 logger.debug(`Process complete, output: \n\n${resp4}`);
                 logger.debug('Opening output file: ', outputFilePath);
-                
+
                 const openPath = Uri.parse(outputFilePath);
 
                 workspace.openTextDocument(openPath)
-                .then(doc => {
-                    window.showTextDocument(doc);
-                });
+                    .then(doc => {
+                        window.showTextDocument(doc);
+                    });
 
             } catch (e) {
                 // catch all errors from command execution
@@ -122,45 +137,36 @@ export function activate(context: ExtensionContext) {
          * setup quickPick with imageName:version
          * set configuration with choice to be used for next conversion
          */
-
-        //curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
-        //curl --unix-socket /var/run/docker.sock http:/v1.24/images/json
-
-        // the following unix-socket commands provide json output that is easily parsed
-        const listImages = `curl --unix-socket /var/run/docker.sock http:/v1.40/images/json`;
-        const exp = cp.exec(listImages, (err, stdout, stderr) => {
-            if (err) {
-                return logger.error('exec error', err);
-            }
-            // console.log('stdout: ' + stdout);
-            logger.error('exec stderr: ', stderr);
-            return [stdout, stderr];
+        logger.debug('f5.chariot.selectImage');
+        
+        const docker = new Docker({ socketPath: '/var/run/docker.sock' });
+        
+        const accImages = await docker.listImages()
+        .then(list => {
+            const dockerImages = list.map(el => el.RepoTags.join('-'));
+            logger.debug('f5.chario.selectImage: docker images on system: ', dockerImages);
+            return dockerImages.filter(x => x.includes('f5-appsvcs'));
         });
-        let images;
-        try {
-            images = cp.execSync(listImages).toString();
-        } catch (e) {
-            console.error(e.message);
-            console.log('tried to get docker images failed, might need sudo');
-            // const m = e.message.includes('permission denied')
-            // if (e.message.includes('permission denied')) {
-            //     return window.showErrorMessage('not able to read current docker images (permission denied)\n, https://docs.docker.com/engine/install/linux-postinstall/')
-            // }
-            try {
-                const fix1 = cp.execSync('sudo docker image ls').toString();
-            } catch (e) {
-                console.error(e.message);
-                console.log('listing docker images with sudo failed, is docker installed?');
-            }
-
-        }
+        
+        logger.debug('f5.chariot.selectImage: ACC docker images found: ', accImages);
+        
+        await window.showQuickPick(accImages)
+        .then( image => {
+            logger.debug('f5.chariot.selectImage: ACC docker image selected: ', image);
+            // workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.8.0');
+            workspace.getConfiguration().update('f5.chariot.dockerImage', image);
+            // workspace.getConfiguration().
+        });
+        
+        logger.debug('f5.chariot.selectImage: done ');
+        
     }));
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.settings', () => {
-		//	open settings window and bring the user to the F5 section
-		return commands.executeCommand("workbench.action.openSettings", "f5-chariot");
+        //	open settings window and bring the user to the F5 section
+        return commands.executeCommand("workbench.action.openSettings", "f5-chariot");
     }));
-    
+
 
 
 }
