@@ -15,15 +15,19 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:f5.chariot.convert",
-		"onCommand:f5.chariot.selectImage",
-		"onCommand:f5.chariot.settings"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"configuration": {
 			"title": "f5-chariot",
 			"properties": {
+				"f5-chariot": {
+					"image": {
+						"type": "string",
+						"default": "somt"
+					}
+				},
 				"f5.chariot.dockerImage": {
 					"type": "string",
 					"description": "docker image to run",
@@ -51,8 +55,23 @@
 				"category": "F5"
 			},
 			{
+				"command": "f5.chariot.convertAPI",
+				"title": "Chariot Convert API",
+				"category": "F5"
+			},
+			{
+				"command": "f5.chariot.convertDirect",
+				"title": "Chariot Convert Direct",
+				"category": "F5"
+			},
+			{
 				"command": "f5.chariot.selectImage",
 				"title": "Chariot Select Image",
+				"category": "F5"
+			},
+			{
+				"command": "f5.chariot.importImage",
+				"title": "ACC Image Import",
 				"category": "F5"
 			},
 			{
@@ -65,6 +84,14 @@
 			"editor/context": [
 				{
 					"command": "f5.chariot.convert",
+					"group": "chariot"
+				},
+				{
+					"command": "f5.chariot.convertDirect",
+					"group": "chariot"
+				},
+				{
+					"command": "f5.chariot.convertAPI",
 					"group": "chariot"
 				},
 				{
@@ -96,6 +123,7 @@
 		"typescript": "^4.0.2"
 	},
 	"dependencies": {
-		"dockerode": "^3.2.1"
+		"dockerode": "^3.2.1",
+		"f5-appsvcs-acc": "file:../accCore"
 	}
 }
