@@ -16,7 +16,7 @@ import * as os from 'os';
 
 // import * as Docker from 'dockerode';
 
-import { ExtensionContext, commands } from 'vscode';
+import { ExtensionContext, commands, window, ProgressLocation } from 'vscode';
 // import { window, ExtensionContext, commands, workspace, Uri, ProgressLocation } from 'vscode';
 
 import logger from './logger';
@@ -48,27 +48,37 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.convertDirect', async () => {
 
-        await getText()
-        .then( async text => {
+        logger.debug(`f5.chariot.convertDirect called`);
 
-            const {declaration, metaData } = await acc(text);
-            // display as3 output in editor
-            displayJsonInEditor(declaration);
-            // log all the metadata
-            logger.debug('ACC METADATA', metaData);
-        })
-        .catch( err => {
-            logger.error('f5.chariot.convertDirect failed with', err);
+        window.withProgress({
+            location: ProgressLocation.Notification,
+            title: `Converting with ACC`,
+        }, async () => {
+
+            await getText()
+                .then(async text => {
+
+                    logger.debug(`f5.chariot.convertDirect text found`);
+
+                    const { declaration, metaData } = await acc(text);
+                    // display as3 output in editor
+                    displayJsonInEditor(declaration);
+                    // log all the metadata
+                    logger.debug('ACC METADATA', metaData);
+                })
+                .catch(err => {
+                    logger.error('f5.chariot.convertDirect failed with', err);
+                });
         });
-        
+
     }));
 
     // const http = new Http();
-    
+
     // const extSettings = new Settings(context);
-    
+
     // const docker = new Docker({ socketPath: '/var/run/docker.sock' });
-    
+
     // workspace.onDidChangeConfiguration( x => {
     //     logger.debug('EXTENSION CONFIGURATION CHANGED!!!');
     //     extSettings.loadConfig(x);
@@ -80,30 +90,30 @@ export function activate(context: ExtensionContext) {
 
     //     let filePath: string;
 
-	// 	if (!item) {
-	// 		// no input means we need to browse for a local file
+    // 	if (!item) {
+    // 		// no input means we need to browse for a local file
     //         await browseFile()
     //         .then( file => item = file)
     //         .catch( err => {
     //             logger.debug(`f5.chariot.import: image browse failed`, err);
     //         });
-	// 	}
+    // 	}
 
-	// 	if (item?._fsPath) {
+    // 	if (item?._fsPath) {
 
-	// 		logger.debug(`f5.chariot.importImage _fsPath recieved:`, item._fsPath);
-	// 		filePath = item._fsPath;
-			
-	// 	} else if (item?.path) {
-			
-	// 		logger.debug(`f5.chariot.importImage path revieved:`, item.path);
-	// 		filePath = item.path;
+    // 		logger.debug(`f5.chariot.importImage _fsPath recieved:`, item._fsPath);
+    // 		filePath = item._fsPath;
 
-	// 	} else {
+    // 	} else if (item?.path) {
 
-	// 		return logger.error('f5.chariot.importImage -> Neither path supplied was valid', JSON.stringify(item));
+    // 		logger.debug(`f5.chariot.importImage path revieved:`, item.path);
+    // 		filePath = item.path;
 
-	// 	}
+    // 	} else {
+
+    // 		return logger.error('f5.chariot.importImage -> Neither path supplied was valid', JSON.stringify(item));
+
+    // 	}
 
     //     const fileStream = fs.createReadStream(filePath);
 
@@ -171,7 +181,7 @@ export function activate(context: ExtensionContext) {
     //     .catch( err => {
     //         logger.error('f5.chariot.convertAPI failed with', err);
     //     });
-        
+
     // }));
 
 
@@ -283,18 +293,18 @@ export function activate(context: ExtensionContext) {
     //      * set configuration with choice to be used for next conversion
     //      */
     //     logger.debug('f5.chariot.selectImage');
-        
-        
-        
+
+
+
     //     const accImages = await docker.listImages()
     //     .then(list => {
     //         const dockerImages = list.map(el => el.RepoTags.join('-'));
     //         logger.debug('f5.chario.selectImage: docker images on system: ', dockerImages);
     //         return dockerImages.filter(x => x.includes('f5-appsvcs-'));
     //     });
-        
+
     //     logger.debug('f5.chariot.selectImage: ACC docker images found: ', accImages);
-        
+
     //     await window.showQuickPick(accImages)
     //     .then( image => {
     //         logger.debug('f5.chariot.selectImage: ACC docker image selected: ', image);
@@ -302,9 +312,9 @@ export function activate(context: ExtensionContext) {
     //         workspace.getConfiguration().update('f5.chariot.dockerImage', image);
     //         // workspace.getConfiguration().
     //     });
-        
+
     //     logger.debug('f5.chariot.selectImage: done ');
-        
+
     // }));
 
 

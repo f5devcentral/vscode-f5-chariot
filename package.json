@@ -50,59 +50,16 @@
 		},
 		"commands": [
 			{
-				"command": "f5.chariot.convert",
-				"title": "Chariot Convert",
-				"category": "F5"
-			},
-			{
-				"command": "f5.chariot.convertAPI",
-				"title": "Chariot Convert API",
-				"category": "F5"
-			},
-			{
 				"command": "f5.chariot.convertDirect",
-				"title": "Chariot Convert Direct",
-				"category": "F5"
-			},
-			{
-				"command": "f5.chariot.selectImage",
-				"title": "Chariot Select Image",
-				"category": "F5"
-			},
-			{
-				"command": "f5.chariot.importImage",
-				"title": "ACC Image Import",
-				"category": "F5"
-			},
-			{
-				"command": "f5.chariot.settings",
-				"title": "Chariot Settings",
+				"title": "Convert with ACC",
 				"category": "F5"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"command": "f5.chariot.convert",
-					"group": "chariot"
-				},
-				{
 					"command": "f5.chariot.convertDirect",
 					"group": "chariot"
-				},
-				{
-					"command": "f5.chariot.convertAPI",
-					"group": "chariot"
-				},
-				{
-					"command": "f5.chariot.selectImage",
-					"group": "chariot"
-				}
-			],
-			"commandPalette": [
-				{
-					"command": "f5.chariot.convert",
-					"when": "none"
 				}
 			]
 		}
