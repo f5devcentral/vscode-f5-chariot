@@ -2,7 +2,8 @@
 	"name": "vscode-f5-chariot",
 	"displayName": "F5 Chariot",
 	"description": "(ACC) AS3 Configuration Converter integration",
-	"version": "0.5.0",
+	"version": "0.6.0",
+	"license": "Apache-2.0",
 	"publisher": "F5DevCentral",
 	"repository": {
 		"type": "git",

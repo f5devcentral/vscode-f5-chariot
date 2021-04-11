@@ -11,12 +11,13 @@
 // import * as fs from 'fs';
 // import * as path from 'path';
 import * as os from 'os';
+
 // import * as cp from 'child_process';
 // import ChildProcess = cp.ChildProcess;
 
 // import * as Docker from 'dockerode';
 
-import { ExtensionContext, commands, window, ProgressLocation } from 'vscode';
+import { ExtensionContext, commands, window, ProgressLocation, languages, Hover, TextDocument } from 'vscode';
 // import { window, ExtensionContext, commands, workspace, Uri, ProgressLocation } from 'vscode';
 
 import logger from './logger';
@@ -30,6 +31,7 @@ import { debug } from 'console';
 const acc = require('f5-appsvcs-acc/src/accWrapper');
 
 import accPackageJson = require('f5-appsvcs-acc/package.json');
+import { parseX509 } from './x509';
 
 
 export function activate(context: ExtensionContext) {
@@ -49,6 +51,22 @@ export function activate(context: ExtensionContext) {
     context.subscriptions.push(commands.registerCommand('f5.chariot.convertDirect', async () => {
 
         logger.debug(`f5.chariot.convertDirect called`);
+
+        // await getText()
+        // .then( text => {
+        //     // const cert = new RegExp("(?m)^-{3,}BEGIN CERTIFICATE-{3,}$(?s).*?^-{3,}END CERTIFICATE-{3,}$", "g");
+        //     const reg = /-{3,}BEGIN CERTIFICATE-{3,}[\s\S]+?-{3,}END CERTIFICATE-{3,}/;
+        //     const cert = new RegExp(reg, "g");
+        //     logger.debug(cert.test(text), text);
+        //     logger.debug('parsed x509', parseX509(text));
+        //     // logger.debug('parsed pretty  x509', jsYaml.safeDump(parseX509(text), { indent: 4 }));
+
+        //     // provideHover() {
+
+        //     //     return new Hover('asdf')
+        //     // }
+            
+        // });
 
         window.withProgress({
             location: ProgressLocation.Notification,
@@ -72,6 +90,7 @@ export function activate(context: ExtensionContext) {
         });
 
     }));
+
 
     // const http = new Http();
 
