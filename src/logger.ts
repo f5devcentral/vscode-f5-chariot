@@ -16,7 +16,7 @@ import { inspect } from 'util';
 class Log {
     private readonly _outputChannel: OutputChannel;
     public constructor() {
-        this._outputChannel = window.createOutputChannel('f5-chariot');
+        this._outputChannel = window.createOutputChannel('f5');
         this._outputChannel.show();
     }
 

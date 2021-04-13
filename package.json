@@ -20,38 +20,9 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"configuration": {
-			"title": "f5-chariot",
-			"properties": {
-				"f5-chariot": {
-					"image": {
-						"type": "string",
-						"default": "somt"
-					}
-				},
-				"f5.chariot.dockerImage": {
-					"type": "string",
-					"description": "docker image to run",
-					"default": "f5-appsvcs-charon:1.8.0"
-				},
-				"f5.chariot.outFileName": {
-					"type": "string",
-					"description": "output file name",
-					"default": "converted.as3.json"
-				},
-				"f5.chariot.fullCommand": {
-					"type": "string",
-					"description": "Full docker command: to allow full control of how docker is executed.  Default=blank.  This setting will superceed all other docker command attributes.  Be sure output file name in this setting matches the \"Out File Name\" setting.  One is for docker command execution, the other is for vscode to open the file in an editor.",
-					"default": "",
-					"examples": [
-						"docker run --rm -v \"/Users/SomeUser/acc\":/app/data f5-appsvcs-charon:1.8.0 -o data/converted.as3.json -c data/toConvert.conf --unsupported --unsupported-objects unSupported.json"
-					]
-				}
-			}
-		},
 		"commands": [
 			{
-				"command": "f5.chariot.convertDirect",
+				"command": "f5.chariot.convert",
 				"title": "Convert with ACC",
 				"category": "F5"
 			}
@@ -59,7 +30,7 @@
 		"menus": {
 			"editor/context": [
 				{
-					"command": "f5.chariot.convertDirect",
+					"command": "f5.chariot.convert",
 					"group": "chariot"
 				}
 			]
@@ -79,9 +50,5 @@
 		"@typescript-eslint/parser": "^3.10.1",
 		"eslint": "^7.11.0",
 		"typescript": "^4.0.2"
-	},
-	"dependencies": {
-		"dockerode": "^3.2.1",
-		"f5-appsvcs-acc": "file:../accCore"
 	}
 }

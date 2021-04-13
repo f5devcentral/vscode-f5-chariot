@@ -12,3 +12,5 @@ node_modules
 # exclude input/output files for file workflow
 toConvert.conf
 converted.as3.json
+
+acc

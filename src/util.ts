@@ -1,47 +1,11 @@
 
 
-import { Uri, window, workspace } from "vscode";
+import { 
+    window,
+    workspace
+} from "vscode";
 import logger from "./logger";
 
-
-
-export async function browseFile() {
-
-    let filePath: string;
-
-    // no input means we need to browse for a local file
-    return await window.showOpenDialog({
-        canSelectMany: false
-    })
-        .then(item => {
-            let newItem: Uri;
-
-            // if we got a file from the showOpenDialog, it comes in an array, even though we told it to only allow single item selection -> return the single array item
-            if(Array.isArray(item)) {
-                // newItem = item[0];
-                return item[0];
-            } else {
-                throw Error('somting');
-            }
-
-            // if (item.fsPath) {
-
-            //     logger.debug(`f5.chariot.importImage _fsPath recieved:`, item.fsPath);
-            //     filePath = item.fsPath;
-
-            // } else if (item?.path) {
-
-            //     logger.debug(`f5.chariot.importImage path revieved:`, item.path);
-            //     filePath = item.path;
-
-            // } else {
-
-            //     return logger.error('f5.chariot.importImage -> Neither path supplied was valid', JSON.stringify(item));
-
-            // }
-        });
-
-}
 
 
 /**
