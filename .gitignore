@@ -2,6 +2,7 @@
 out
 
 # node/modules install directory
+./node_modules/
 node_modules
 
 .vscode-test/
@@ -14,3 +15,4 @@ toConvert.conf
 converted.as3.json
 
 acc
+f5-as3-config-converter*.tar.gz
