@@ -6,19 +6,54 @@ All notable changes to the "vscode-f5-chariot" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+---
+
+## [1.11.0] - (04-15-2020)
+
+### Modified
+
+- Complete refactor for direct integration with acc code, bypassing docker/rest-api.
+- Alligned local version with ACC version
+  - the thought here is to release a new extension version for each ACC release
+  - update independently of the main vscode-f5 extension
+  - users could easily revert to previous versions
+
+---
+
+## [0.5.0] - (03-14-2020)
+
+This version was primarily exploration on the ACC REST API which led to integrating directly with the code
+
+---
+
+## [0.4.0] - (12-14-2020)
+
+### Added
+
+- Added configuration option to specify entire docker command string
+  - This should provide complete flexibility for getting the command to execute on different systems
+  - And control the different ACC processing outputs that are now available with v1.8
+- Added catching and logging of all errors from docker command execution
+  - This should provide full visibility into all execution output
+
+### Modified
+
+- Updated default ACC version to latest 1.8
 
 ---
 
 ## [0.3.0] - (10-26-2020)
 
 ### Added
+
 - Added progress bar for the main "Chariot Convert" command to indicate status
 
 ---
 
 ## [0.2.0] - (10-20-2020)
 
-## Added
+### Added
+
 - Command for quick access to settings
 - OUTPUT logging in vscode to provide feedback about what's happening and hopefully some idea of errors when they happen
 - System informtion to logs for troubleshooting (Host OS, Platform, Release, and UserInfo)

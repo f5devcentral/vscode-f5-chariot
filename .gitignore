@@ -2,6 +2,7 @@
 out
 
 # node/modules install directory
+./node_modules/
 node_modules
 
 .vscode-test/
@@ -9,3 +10,9 @@ node_modules
 *.vsix
 # user app data for npm?
 *AppDataRoamingnpm
+# exclude input/output files for file workflow
+toConvert.conf
+converted.as3.json
+
+acc
+f5-as3-config-converter*.tar.gz

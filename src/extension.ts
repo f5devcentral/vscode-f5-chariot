@@ -1,174 +1,116 @@
-
-import * as fs from 'fs';
-import * as path from 'path';
-import * as os from 'os';
-import * as cp from 'child_process';
-import ChildProcess = cp.ChildProcess;
-
-import { window, ExtensionContext, commands, workspace, Uri, ProgressLocation } from 'vscode';
-
-import logger from './logger';
-
 /**
- * 
- * 1. get editor text (whole document or whatever is highlighted)
- * 2. put text in file
- * 3. run converter
- * 4. get output file -> display in new editor
- * 
- * https://stackoverflow.com/questions/7055061/nodejs-temporary-file-name
- * 
+ * Copyright 2021 F5 Networks, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
+'use strict';
+
+import {
+    ExtensionContext,
+    commands,
+    window,
+    ProgressLocation
+} from 'vscode';
+
+import {
+    displayJsonInEditor,
+    getText
+} from './util';
+
+import { Logger } from 'f5-conx-core';
+
+import { acc } from './accWrapper'
+import { EventEmitter } from 'events';
+
+const logger = Logger.getLogger();
+logger.console = false;
+// delete process.env.F5_CONX_CORE_LOG_LEVEL;
+
+if (!process.env.F5_CONX_CORE_LOG_LEVEL) {
+    // if this isn't set by something else, set it to debug for dev
+    process.env.F5_CONX_CORE_LOG_LEVEL = 'DEBUG';
+}
+
+// const channels = window;
+
+// create OUTPUT channel
+const f5OutputChannel = window.createOutputChannel('f5-chariot');
+// there is no way to get the output channel id of the main vscode-f5 extension, so we can't just output there
+//  https://stackoverflow.com/questions/59597290/get-vscode-output-channel
+// So, we create a new channel and make it visible for each conversion
+
+// make visible
+f5OutputChannel.show();
+
+// inject vscode output into logger
+logger.output = function (log: string) {
+    f5OutputChannel.appendLine(log);
+};
+
+const eventer = new EventEmitter()
+    .on('log-http-request', msg => logger.httpRequest(msg))
+    .on('log-http-response', msg => logger.httpResponse(msg))
+    .on('log-debug', msg => logger.debug(msg))
+    .on('log-info', msg => logger.info(msg))
+    .on('log-warn', msg => logger.warning(msg))
+    .on('log-error', msg => logger.error(msg));
+
+const accPackageJson = require('../acc/package.json');
 
 export function activate(context: ExtensionContext) {
 
+    // make output visible
+    f5OutputChannel.show();
+
+    logger.info(`ACC Details: `, {
+        name: accPackageJson.name,
+        author: accPackageJson.author,
+        description: accPackageJson.description,
+        version: accPackageJson.version,
+        license: accPackageJson.license,
+        repository: accPackageJson.repository.url
+    });
 
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.convert', async () => {
 
-        window.withProgress({
+        logger.info(`f5.chariot.convert called`);
+
+        await window.withProgress({
             location: ProgressLocation.Notification,
             title: `Converting with ACC`,
-            cancellable: true
         }, async () => {
-                
-            const extPath = path.join(__dirname, '../');
-            let wkspce = workspace.rootPath;
-            const image = workspace.getConfiguration().get('f5.chariot.dockerImage', 'f5-appsvcs-charron:1.7.0');
-            const outputFile = workspace.getConfiguration().get('f5.chariot.outFileName', 'converted.as3.json');
 
-            await logger.makeVisible();   // make log OUTPUT visible again...
+            await getText()
+                .then(async text => {
 
-            logger.debug(`Host OS: ${os.type()}, Platform: ${os.platform()}, Release: ${os.release()}, UserInfo: ${JSON.stringify(os.userInfo())}`);
-            
-            // get editor window
-            const editor = window.activeTextEditor;
-            if (!editor) {
-                logger.error('no open editor - exiting');
-                return;
-            }
-            if (!wkspce) {
-                // if no open workspace, should make the user open a workspace,
-                // but for now we just fallback to using the extension path
-                wkspce = extPath;
-                logger.debug(`no open workspace detected, will try to place files in extension base path`);
-            } else {
-                logger.debug(`detected open vscode workspace of ${wkspce}, will use this workspace for files location`);
-            }
+                    logger.debug(`f5.chariot.convert text found`);
 
-            // capture selected text or all text in editor
-            let text: string;
-            if (editor.selection.isEmpty) {
-                text = editor.document.getText();	// entire editor/doc window
-                logger.debug('got entire editor text');
-            } else {
-                text = editor.document.getText(editor.selection);	// highlighted text
-                logger.debug('got selected text in editor');
-            }
+                    const { declaration, metaData } = await acc(text);
 
-            const inputFile = 'toConvert.conf';
-            const inputFilePath = path.join(wkspce, inputFile);
-            const outputFilePath = path.join(wkspce, outputFile);
+                    // display as3 output in editor
+                    displayJsonInEditor(declaration);
 
-            fs.writeFileSync(inputFilePath, text);
-            logger.debug('writing text to file: ', inputFilePath);
-
-            // build/append docker command
-            let rund = `docker run --rm -v `;                   // base docker command
-            rund += `${wkspce}:/app/data `;                     // volume mount
-            rund += `${image} `;                                // image definition
-            rund += `-o data/${outputFile} `;                   // output file definition
-            rund += `-c data/${inputFile} `;                    // input file definition
-            rund += `--unsupported `;                           // logs configuration objects that ACC did notconvert
-            rund += `--unsupported-objects unSupported.json`;   // logs to file objects not converted
-            logger.debug('Issuing docker command: ', rund);
-
-            const resp4 = cp.execSync(rund).toString();
-            logger.debug(`Process complete, output: \n\n${resp4}`);
-
-            logger.debug('Opening output file: ', outputFilePath);
-            const openPath = Uri.parse(outputFilePath);
-            workspace.openTextDocument(openPath).then(doc => {
-                window.showTextDocument(doc);
-            });
-
-            // todo: delete files when done, converted.as3.json and unSupported.json
+                    // log all the metadata
+                    logger.debug('ACC METADATA', metaData);
+                })
+                .catch(err => {
+                    logger.error('f5.chariot.convert failed with', err);
+                });
         });
+
     }));
-
-    context.subscriptions.push(commands.registerCommand('f5.chariot.selectImage', async () => {
-
-        /**
-         * get list of local docker images
-         * setup quickPick with imageName:version
-         * set configuration with choice to be used for next conversion
-         */
-
-        //curl -s --unix-socket /var/run/docker.sock http://dummy/containers/json
-        //curl --unix-socket /var/run/docker.sock http:/v1.24/images/json
-
-        // the following unix-socket commands provide json output that is easily parsed
-        const listImages = `curl --unix-socket /var/run/docker.sock http:/v1.40/images/json`;
-        const exp = cp.exec(listImages, (err, stdout, stderr) => {
-            if (err) {
-                return logger.error('exec error', err);
-            }
-            // console.log('stdout: ' + stdout);
-            logger.error('exec stderr: ', stderr);
-            return [stdout, stderr];
-        });
-        let images;
-        try {
-            images = cp.execSync(listImages).toString();
-        } catch (e) {
-            console.error(e.message);
-            console.log('tried to get docker images failed, might need sudo');
-            // const m = e.message.includes('permission denied')
-            // if (e.message.includes('permission denied')) {
-            //     return window.showErrorMessage('not able to read current docker images (permission denied)\n, https://docs.docker.com/engine/install/linux-postinstall/')
-            // }
-            try {
-                const fix1 = cp.execSync('sudo docker image ls').toString();
-            } catch (e) {
-                console.error(e.message);
-                console.log('listing docker images with sudo failed, is docker installed?');
-            }
-
-        }
-    }));
-
-    context.subscriptions.push(commands.registerCommand('f5.chariot.settings', () => {
-		//	open settings window and bring the user to the F5 section
-		return commands.executeCommand("workbench.action.openSettings", "f5-chariot");
-    }));
-    
-
 
 }
 
-
-async function detectDocker() {
-
-    // function to detect if docker is actually running 
-    // was gonna just look for a response to the following
-    // curl --unix-socket /var/run/docker.sock http:/v1.24/images/json
-}
-
-
-/**
- * Executes a shell command and return it as a Promise.
- * ** long way to run a shell command async, or just use execSync...
- * @param cmd 
- * @return
- */
-async function execShellCommand(cmd: string): Promise<string> {
-    // const exec = require('child_process').exec;
-    return new Promise((resolve, reject) => {
-        cp.exec(cmd, (error, stdout, stderr) => {
-            if (error) {
-                console.warn(error);
-            }
-            resolve(stdout ? stdout : stderr);
-        });
-    });
-}

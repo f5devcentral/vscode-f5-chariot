@@ -1,9 +1,16 @@
 {
 	"name": "vscode-f5-chariot",
-	"displayName": "F5 Chariot",
-	"description": "ACC integration",
-	"version": "0.3.0",
-	"publisher": "DumpySquare",
+	"displayName": "F5 ACC Chariot",
+	"description": "(ACC) AS3 Configuration Converter integration",
+	"version": "1.11.0",
+	"license": "Apache-2.0",
+	"publisher": "F5DevCentral",
+	"icon": "images/f5.png",
+	"galleryBanner": {
+		"color": "#DCDCDC",
+		"theme": "light"
+	},
+	"homepage": "https://github.com/f5devcentral/vscode-f5-chariot/blob/master/README.md",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/f5devcentral/vscode-f5-chariot"
@@ -15,35 +22,14 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:f5.chariot.convert",
-		"onCommand:f5.chariot.settings"
+		"onCommand:f5.chariot.convert"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"configuration": {
-			"title": "f5-chariot",
-			"properties": {
-				"f5.chariot.dockerImage": {
-					"type": "string",
-					"description": "docker image to run",
-					"default": "f5-appsvcs-charon:1.7.0"
-				},
-				"f5.chariot.outFileName": {
-					"type": "string",
-					"description": "output file name",
-					"default": "converted.as3.json"
-				}
-			}
-		},
 		"commands": [
 			{
 				"command": "f5.chariot.convert",
-				"title": "Chariot Convert",
-				"category": "F5"
-			},
-			{
-				"command": "f5.chariot.settings",
-				"title": "Chariot Settings",
+				"title": "Convert with ACC",
 				"category": "F5"
 			}
 		],
@@ -51,13 +37,7 @@
 			"editor/context": [
 				{
 					"command": "f5.chariot.convert",
-					"group": "F5"
-				}
-			],
-			"commandPalette": [
-				{
-					"command": "f5.chariot.convert",
-					"when": "none"
+					"group": "chariot"
 				}
 			]
 		}
@@ -69,12 +49,16 @@
 		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
-		"@types/node": "^12.12.68",
+		"@types/node": "^14.14.37",
 		"@types/vscode": "^1.34.0",
-		"@typescript-eslint/eslint-plugin": "^3.10.1",
-		"@typescript-eslint/parser": "^3.10.1",
+		"@typescript-eslint/eslint-plugin": "^4.22.0",
+		"@typescript-eslint/parser": "^4.22.0",
 		"eslint": "^7.11.0",
+		"mocha": "^8.3.2",
+		"ts-node": "^9.1.1",
 		"typescript": "^4.0.2"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"f5-conx-core": "github:dumpysquare/f5-conx-core"
+	}
 }

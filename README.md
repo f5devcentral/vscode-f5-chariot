@@ -1,59 +1,60 @@
 # vscode-f5-chariot
 
-This is an integration with ACC(Charon) to provide quick conversions within vscode
+Greetings!
 
-The .vsix to install this can be found in the releases section.
+This is an integration with ACC(Charon) to provide quick conversions within vscode.
+
+This version of the extension has "batteries included" and does not require any external docker containers or dependencies.
+
+The version of this extension is locked with the version of the ACC project
 
 Please open an issue with any comments, questions, enhancements, or bugs.
 
 Thanks!
 
-&nbsp;
+---
+
+## Other Pages
+
+### Main f5-as3-config-converter (ACC) Repo
+
+* [Repo](https://github.com/f5devcentral/f5-as3-config-converter)
+* [Issues](https://github.com/f5devcentral/f5-as3-config-converter/issues)
+* [Releases](https://github.com/f5devcentral/f5-as3-config-converter/releases)
+
+### Other pages from this repo
+
+[vscode-f5-chariot CHANGELOG](CHANGELOG.md)
 
 ---
 
-&nbsp;
+## Troubleshooting
 
-### Other Pages
+The extension is a single command/function to convert configuration to AS3.  By default all the output provided by ACC is displayed in the ``f5`` view of the ``OUTPUT`` window
 
-* [CHANGELOG](CHANGELOG.md)
+## Good Input
 
-&nbsp;
-
----
-
-&nbsp;
-
-## Architecture
-
-
-This extension relys on docker being installed locally.  It takes text from an editor window, saves it to a .conf file and executes the ACC docker container pointing to that .conf file as an input.  Once processing has completed, the extension will open the output created by ACC.  
-
-Docker integration is done with regular bash/exec commands provided through node
+<!-- ![Basic Ouput Screenshot](./chariot_output_4.15.2021.png) -->
+<img src="./chariot_output_4.15.2021.png" alt="drawing" width="80%"/>
 
 &nbsp;
 
-> NOTE:  Going to see about getting ACC wrapped in a basic REST API and simple web page so it can be run as a service and interacted with over HTTP
+## Bad Input
+
+<!-- ![Basic Ouput None Screenshot](chariot_output_bare_4.15.2021.png) -->
+<img src="./chariot_output_bare_4.15.2021.png" alt="drawing" width="80%"/>
 
 &nbsp;
 
 ---
-
-&nbsp;
 
 ## Extension Commands
 
-This extension provides the following commands and are active on first command execute (if extension is installed and enabled). So it will take a couple of seconds to load the extension the first time a command is run
+This extension provides a single command:
 
-* `F5: Chariot Convert`: (via editor right-click) Converts entire editor text or selection with ACC
-* `F5: Chariot Settings`: (via command palette 'F1') Quickly access settings for extension
-* `F5: Chariot Image`: (pending) Provides list of locally available docker images for the user to select which image to use for processing
-
-&nbsp;
+* `F5: Convert with ACC`: (via editor right-click) Converts entire editor text or selection with ACC
 
 ---
-
-&nbsp;
 
 ## Demo
 
@@ -77,8 +78,22 @@ The following shows a simple demo of the core goal of this project, which is tak
 
 ## Debugging extension
 
-- Clone repo
-- Run `npm install` in terminal to install dependencies
-- Run the `Run Extension` target in the Debug View. This will:
-	- Start a task `npm: watch` to compile the code
-	- Run the extension in a new VS Code window
+* Clone repo
+* Run `npm install` in terminal to install dependencies
+* Run the `Run Extension` target in the Debug View. This will:
+  * Start a task `npm: watch` to compile the code
+  * Run the extension in a new VS Code window
+
+## Copyright
+
+Copyright 2014-2020 F5 Networks Inc.
+
+### F5 Networks Contributor License Agreement
+
+Before you start contributing to any project sponsored by F5 Networks, Inc. (F5) on GitHub, you will need to sign a Contributor License Agreement (CLA).  
+
+If you are signing as an individual, we recommend that you talk to your employer (if applicable) before signing the CLA since some employment agreements may have restrictions on your contributions to other projects. Otherwise by submitting a CLA you represent that you are legally entitled to grant the licenses recited therein.  
+
+If your employer has rights to intellectual property that you create, such as your contributions, you represent that you have received permission to make contributions on behalf of that employer, that your employer has waived such rights for your contributions, or that your employer has executed a separate CLA with F5.
+
+If you are signing on behalf of a company, you represent that you are legally entitled to grant the license recited therein. You represent further that each employee of the entity that submits contributions is authorized to submit such contributions on behalf of the entity pursuant to the CLA.
