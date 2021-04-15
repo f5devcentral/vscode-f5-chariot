@@ -1,0 +1,18 @@
+.vscode/**
+.vscode-test/**
+out/test/**
+# ignore new documentation site
+docs/**
+# ignore source typescript files
+src/**
+.gitignore
+vsc-extension-quickstart.md
+**/tsconfig.json
+**/.eslintrc.json
+**/*.map
+**/*.ts
+
+# ignore github actions
+.github/**
+# ignore node cpu profiling file
+*.cpuprofile
