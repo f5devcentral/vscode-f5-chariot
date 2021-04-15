@@ -8,11 +8,15 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
-## [0.6.0] - (04-20-2020)
+## [1.11.0] - (04-15-2020)
 
 ### Modified
 
-- Complete refactor for direct integration with code, bypassing docker/rest-api
+- Complete refactor for direct integration with acc code, bypassing docker/rest-api.
+- Alligned local version with ACC version
+  - the thought here is to release a new extension version for each ACC release
+  - update independently of the main vscode-f5 extension
+  - users could easily revert to previous versions
 
 ---
 
