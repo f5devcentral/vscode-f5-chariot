@@ -1,56 +1,49 @@
 # vscode-f5-chariot
 
+Greetings!
+
 This is an integration with ACC(Charon) to provide quick conversions within vscode.
 
-This extension requires that ACC already be installed and accessable via the command line
+This version of the extension has "batteries included" and does not require any extrernal docker containers or dependencies.
 
-The .vsix to install this can be found in the releases section.
+The version of this extension is locked with the version of the ACC project
 
 Please open an issue with any comments, questions, enhancements, or bugs.
 
 Thanks!
 
-&nbsp;
-
 ---
 
 ## Other Pages
 
-* [CHANGELOG](CHANGELOG.md)
+* [Main ACC Repo](https://github.com/f5devcentral/f5-as3-config-converter)
+* [Main ACC Issues](https://github.com/f5devcentral/f5-as3-config-converter/issues)
+* [Main ACC Releases](https://github.com/f5devcentral/f5-as3-config-converter/releases)
+* [vscode-f5-chariot CHANGELOG](CHANGELOG.md)
 
 ---
 
-&nbsp;
+## Troubleshooting
 
-## Architecture
+The extension is a single command/function to convert configuration to AS3.  By default all the output provided by ACC is displayed in the ``f5`` view of the ``OUTPUT`` window
 
-This extension relys on docker being installed locally.  It takes text from an editor window, saves it to a .conf file and executes the ACC docker container pointing to that .conf file as an input.  Once processing has completed, the extension will open the output created by ACC.  
+### The following output should provide what is needed to help troubleshoot
 
-Docker integration is done with regular bash/exec commands provided through node
+<img src="./vscode-f5-chartiot_output_4.15.2021.png" alt="drawing" width="80%"/>
 
-&nbsp;
+### This is what happens when no valid TMOS config is detected
 
-> NOTE:  Going to see about getting ACC wrapped in a basic REST API and simple web page so it can be run as a service and interacted with over HTTP
-
-&nbsp;
+<img src="./vscode-f5-chartiot_output_bare_4.15.2021.png" alt="drawing" width="80%"/>
 
 ---
-
-&nbsp;
 
 ## Extension Commands
 
-This extension provides the following commands and are active on first command execute (if extension is installed and enabled). So it will take a couple of seconds to load the extension the first time a command is run
+This extension provides a single command:
 
-* `F5: Chariot Convert`: (via editor right-click) Converts entire editor text or selection with ACC
-* `F5: Chariot Settings`: (via command palette 'F1') Quickly access settings for extension
-* `F5: Chariot Image`: (pending) Provides list of locally available docker images for the user to select which image to use for processing
-
-&nbsp;
+* `F5: Convert with ACC`: (via editor right-click) Converts entire editor text or selection with ACC
 
 ---
-
-&nbsp;
 
 ## Demo
 
