@@ -42,8 +42,13 @@ if (!process.env.F5_CONX_CORE_LOG_LEVEL) {
     process.env.F5_CONX_CORE_LOG_LEVEL = 'DEBUG';
 }
 
+// const channels = window;
+
 // create OUTPUT channel
-const f5OutputChannel = window.createOutputChannel('f5');
+const f5OutputChannel = window.createOutputChannel('f5-chariot');
+// there is no way to get the output channel id of the main vscode-f5 extension, so we can't just output there
+//  https://stackoverflow.com/questions/59597290/get-vscode-output-channel
+// So, we create a new channel and make it visible for each conversion
 
 // make visible
 f5OutputChannel.show();
@@ -64,6 +69,9 @@ const eventer = new EventEmitter()
 const accPackageJson = require('../acc/package.json');
 
 export function activate(context: ExtensionContext) {
+
+    // make output visible
+    f5OutputChannel.show();
 
     logger.info(`ACC Details: `, {
         name: accPackageJson.name,

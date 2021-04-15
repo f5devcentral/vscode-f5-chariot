@@ -32,14 +32,16 @@ Thanks!
 
 The extension is a single command/function to convert configuration to AS3.  By default all the output provided by ACC is displayed in the ``f5`` view of the ``OUTPUT`` window
 
-### The following output should provide what is needed to help troubleshoot
+## Good Input
 
+<!-- ![Basic Ouput Screenshot](./chariot_output_4.15.2021.png) -->
 <img src="./chariot_output_4.15.2021.png" alt="drawing" width="80%"/>
 
 &nbsp;
 
-### This is what happens when no valid TMOS config is detected
+## Bad Input
 
+<!-- ![Basic Ouput None Screenshot](chariot_output_bare_4.15.2021.png) -->
 <img src="./chariot_output_bare_4.15.2021.png" alt="drawing" width="80%"/>
 
 &nbsp;
