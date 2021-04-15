@@ -1,6 +1,6 @@
 .vscode/**
 .vscode-test/**
-out/test/**
+out/tests/**
 # ignore new documentation site
 docs/**
 # ignore source typescript files
@@ -16,3 +16,6 @@ vsc-extension-quickstart.md
 .github/**
 # ignore node cpu profiling file
 *.cpuprofile
+
+# ignore core ACC tar
+f5-as3-config-converter*.tar.gz

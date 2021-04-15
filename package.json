@@ -22,7 +22,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*"
+		"onCommand:f5.chariot.convert"
 	],
 	"main": "./out/extension.js",
 	"contributes": {

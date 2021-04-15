@@ -4,7 +4,7 @@ Greetings!
 
 This is an integration with ACC(Charon) to provide quick conversions within vscode.
 
-This version of the extension has "batteries included" and does not require any extrernal docker containers or dependencies.
+This version of the extension has "batteries included" and does not require any external docker containers or dependencies.
 
 The version of this extension is locked with the version of the ACC project
 
@@ -16,10 +16,15 @@ Thanks!
 
 ## Other Pages
 
-* [Main ACC Repo](https://github.com/f5devcentral/f5-as3-config-converter)
-* [Main ACC Issues](https://github.com/f5devcentral/f5-as3-config-converter/issues)
-* [Main ACC Releases](https://github.com/f5devcentral/f5-as3-config-converter/releases)
-* [vscode-f5-chariot CHANGELOG](CHANGELOG.md)
+### Main f5-as3-config-converter (ACC) Repo
+
+* [Repo](https://github.com/f5devcentral/f5-as3-config-converter)
+* [Issues](https://github.com/f5devcentral/f5-as3-config-converter/issues)
+* [Releases](https://github.com/f5devcentral/f5-as3-config-converter/releases)
+
+### Other pages from this repo
+
+[vscode-f5-chariot CHANGELOG](CHANGELOG.md)
 
 ---
 
@@ -29,11 +34,15 @@ The extension is a single command/function to convert configuration to AS3.  By 
 
 ### The following output should provide what is needed to help troubleshoot
 
-<img src="./vscode-f5-chartiot_output_4.15.2021.png" alt="drawing" width="80%"/>
+<img src="./chariot_output_4.15.2021.png" alt="drawing" width="80%"/>
+
+&nbsp;
 
 ### This is what happens when no valid TMOS config is detected
 
-<img src="./vscode-f5-chartiot_output_bare_4.15.2021.png" alt="drawing" width="80%"/>
+<img src="./chariot_output_bare_4.15.2021.png" alt="drawing" width="80%"/>
+
+&nbsp;
 
 ---
 
