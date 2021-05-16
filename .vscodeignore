@@ -19,3 +19,4 @@ vsc-extension-quickstart.md
 
 # ignore core ACC tar
 f5-as3-config-converter*.tar.gz
+*.tar.gz
