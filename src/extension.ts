@@ -30,17 +30,17 @@ import {
 
 import { Logger } from 'f5-conx-core';
 
-import { acc } from './accWrapper'
+import { acc } from './accWrapper';
 import { EventEmitter } from 'events';
 
 const logger = Logger.getLogger();
 logger.console = false;
 // delete process.env.F5_CONX_CORE_LOG_LEVEL;
 
-if (!process.env.F5_CONX_CORE_LOG_LEVEL) {
-    // if this isn't set by something else, set it to debug for dev
-    process.env.F5_CONX_CORE_LOG_LEVEL = 'DEBUG';
-}
+// if (!process.env.F5_CONX_CORE_LOG_LEVEL) {
+//     // if this isn't set by something else, set it to debug for dev
+//     process.env.F5_CONX_CORE_LOG_LEVEL = 'DEBUG';
+// }
 
 // const channels = window;
 
@@ -66,13 +66,12 @@ const eventer = new EventEmitter()
     .on('log-warn', msg => logger.warning(msg))
     .on('log-error', msg => logger.error(msg));
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const accPackageJson = require('../acc/package.json');
 
 export function activate(context: ExtensionContext) {
 
-    // make output visible
-    f5OutputChannel.show();
-
+    
     logger.info(`ACC Details: `, {
         name: accPackageJson.name,
         author: accPackageJson.author,
@@ -81,10 +80,13 @@ export function activate(context: ExtensionContext) {
         license: accPackageJson.license,
         repository: accPackageJson.repository.url
     });
-
-
+    
+    
     context.subscriptions.push(commands.registerCommand('f5.chariot.convert', async () => {
-
+        
+        // make output visible
+        f5OutputChannel.show();
+        
         logger.info(`f5.chariot.convert called`);
 
         await window.withProgress({
@@ -95,7 +97,7 @@ export function activate(context: ExtensionContext) {
             await getText()
                 .then(async text => {
 
-                    logger.debug(`f5.chariot.convert text found`);
+                    logger.info(`f5.chariot.convert text found`);
 
                     const { declaration, metaData } = await acc(text);
 
@@ -103,7 +105,7 @@ export function activate(context: ExtensionContext) {
                     displayJsonInEditor(declaration);
 
                     // log all the metadata
-                    logger.debug('ACC METADATA', metaData);
+                    logger.info('ACC METADATA', metaData);
                 })
                 .catch(err => {
                     logger.error('f5.chariot.convert failed with', err);

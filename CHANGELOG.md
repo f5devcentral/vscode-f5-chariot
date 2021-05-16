@@ -8,7 +8,19 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
-## [1.11.0] - (04-15-2020)
+## [1.12.0] - (06-15-2021)
+
+### Modified --- PENDING ---
+
+- ACC v1.12.0
+- Minor code tweaks for house keeping
+- all logs are now info
+- extension only loads on first command execution
+- command execution makes output visible
+
+---
+
+## [1.11.0] - (04-15-2021)
 
 ### Modified
 
@@ -59,6 +71,7 @@ This version was primarily exploration on the ACC REST API which led to integrat
 - System informtion to logs for troubleshooting (Host OS, Platform, Release, and UserInfo)
 
 ## Modified
+
 - Added the following switches to the docker command to provide the most output
     - --unsupported --unsupported-objects unSupported.json
 

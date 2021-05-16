@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * Copyright 2021 F5 Networks, Inc.
  *
@@ -146,6 +147,6 @@ export async function acc (data: any) {
             unSupported: unsupportedObj,
             declarationInfo,
         }
-    }
+    };
     // return jsonDeclaration;
 }
