@@ -27,8 +27,7 @@ docker cp <containerId>:/file/path/within/container /host/path/target
 
 tar -czvf acc_coreCode_4.14.2021.tar.gz .
 
-tar -czvf ./data/acc_coreCode1_4.14.2021.tar.gz ./init.js ./node_modules ./src ./package.json ./static 
-
+tar -czvf ./data/acc_coreCode1_4.14.2021.tar.gz ./init.js ./node_modules ./src ./package.json ./static
 
 ## confirm code archive
 
@@ -50,6 +49,5 @@ drwxr-xr-x   1 default root    4096 Apr  2 20:24 static
 ## unpack code archive to directory
 
 * unpack to "acc" directory?
-
 
 ted@r2d2:~/projects/vscode-f5-chariot/acc_1.11.0$ tar -xzvf acc_coreCode_1.11.0.tar.gz
