@@ -8,7 +8,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
-## [1.12.0] - (06-15-2021)
+## [1.12.0] - (05-25-2021)
 
 ### Modified
 
