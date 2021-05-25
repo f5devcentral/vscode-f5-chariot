@@ -10,9 +10,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [1.12.0] - (06-15-2021)
 
-### Modified --- PENDING ---
+### Modified
 
 - ACC v1.12.0
+  - <https://github.com/f5devcentral/f5-as3-config-converter/releases/tag/v1.12.0>
 - Minor code tweaks for house keeping
 - all logs are now info
 - extension only loads on first command execution
