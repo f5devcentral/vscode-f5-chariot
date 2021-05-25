@@ -67,7 +67,7 @@ const eventer = new EventEmitter()
     .on('log-error', msg => logger.error(msg));
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const accPackageJson = require('../acc/package.json');
+const accPackageJson = require('f5-as3-config-converter/package.json');
 
 export function activate(context: ExtensionContext) {
 

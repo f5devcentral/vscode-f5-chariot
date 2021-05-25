@@ -59,6 +59,7 @@
 		"typescript": "^4.0.2"
 	},
 	"dependencies": {
+		"f5-as3-config-converter": "file:f5-as3-config-converter-v1.12.0.tar.gz",
 		"f5-conx-core": "github:dumpysquare/f5-conx-core"
 	}
 }

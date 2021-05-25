@@ -18,25 +18,24 @@
  'use strict';
 
 // import fs = require('fs');
-const analytics = require('../acc/src/analytics');
-const as3Properties = require('../acc/src/maps/as3-properties-latest');
-const as3PropertiesCustom = require('../acc/src/maps/as3-properties-custom');
-const converter = require('../acc/src/converter');
-const countObjects = require('../acc/src/util/countObjects');
-const declarationStats = require('../acc/src/declarationStats');
-const extract = require('../acc/src/extract');
-const filterConf = require('../acc/src/filterConf');
-const filterByApplication = require('../acc/src/filterByApplication');
-const getBigipVersion = require('../acc/src/getBigipVersion');
-const getConfigFiles = require('../acc/src/getConfigFiles');
-const logObjects = require('../acc/src/logObjects');
-const parse = require('../acc/src/parse');
-const readFiles = require('../acc/src/readFiles');
-const removeDefaultValues = require('../acc/src/removeDefaultValues');
-const removeIapp = require('../acc/src/removeIapp');
-const supported = require('../acc/src/maps/customDict');
-
-
+// const analytics = require('../acc/src/analytics');
+const analytics = require('f5-as3-config-converter/src/analytics.js');
+const as3Properties = require('f5-as3-config-converter/src/maps/as3-properties-latest');
+const as3PropertiesCustom = require('f5-as3-config-converter/src/maps/as3-properties-custom');
+const converter = require('f5-as3-config-converter/src/converter');
+const countObjects = require('f5-as3-config-converter/src/util/countObjects');
+const declarationStats = require('f5-as3-config-converter/src/declarationStats');
+const extract = require('f5-as3-config-converter/src/extract');
+const filterConf = require('f5-as3-config-converter/src/filterConf');
+const filterByApplication = require('f5-as3-config-converter/src/filterByApplication');
+const getBigipVersion = require('f5-as3-config-converter/src/getBigipVersion');
+const getConfigFiles = require('f5-as3-config-converter/src/getConfigFiles');
+const logObjects = require('f5-as3-config-converter/src/logObjects');
+const parse = require('f5-as3-config-converter/src/parse');
+const readFiles = require('f5-as3-config-converter/src/readFiles');
+const removeDefaultValues = require('f5-as3-config-converter/src/removeDefaultValues');
+const removeIapp = require('f5-as3-config-converter/src/removeIapp');
+const supported = require('f5-as3-config-converter/src/maps/customDict');
 
 
 export async function acc (data: any) {
@@ -89,12 +88,12 @@ export async function acc (data: any) {
 
     converted.unsupportedObjects.forEach((obj: any) => Object.assign(unsupportedObj, obj));
     
-    const jsonDeclaration = JSON.stringify(declaration, null, 4);
-
+    
     // if (!config.showExtended) {
     //     declaration = removeDefaultValues(declaration);
     // }
-
+        
+    const jsonDeclaration = JSON.stringify(declaration, null, 4);
     const declarationInfo = declarationStats(declaration);
     const declarationInfoTotal = declarationInfo.total;
     const declarationInfoClasses = declarationInfo.classes;
