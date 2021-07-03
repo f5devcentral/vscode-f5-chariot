@@ -14,5 +14,9 @@ node_modules
 toConvert.conf
 converted.as3.json
 
+# original acc source files extracted from docker container
 acc
+# acc docker images
 f5-as3-config-converter*.tar.gz
+# acc nodejs code packages
+f5-as3-config-converter*.tgz
