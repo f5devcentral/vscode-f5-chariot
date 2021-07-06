@@ -20,12 +20,13 @@ const testAppParsed = Uri.parse(testAppConf);
 // flag to step through tests for debugging
 // eslint-disable-next-line prefer-const
 let step = false;
-step = true;
-let doc;
+// step = true;
+let testTitle: string;
 
 suite('Core acc-chariot tests', () => {
 	window.showInformationMessage('Starting main tests');
-	test('open test tmos app config', async () => {
+	testTitle = 'open test tmos app config';
+	test(testTitle, async () => {
 
 		//	clear all open editors
 		await commands.executeCommand('workbench.action.closeAllEditors');
@@ -41,7 +42,7 @@ suite('Core acc-chariot tests', () => {
 
 		await getText()
 		.then( async text => {
-			if(step) await window.showWarningMessage(`step...`, 'continue?');
+			if(step) await window.showWarningMessage(testTitle, 'continue?');
 			assert.deepStrictEqual(text, testAppText);
 		})
 		.catch( async err => {
@@ -52,8 +53,8 @@ suite('Core acc-chariot tests', () => {
 		
 	}).timeout(50000);
 	
-	
-	test('convert test app tmos to as3 with acc', async () => {
+	testTitle = 'convert test app tmos to as3 with acc';
+	test(testTitle, async () => {
 		
 		// execute acc to pick up editor text and convert it
 		await commands.executeCommand('f5.chariot.convert');
@@ -64,7 +65,7 @@ suite('Core acc-chariot tests', () => {
 		.then( async text => {
 			const editorText = await cleanUniques(JSON.parse(text));
 			const original = await cleanUniques(JSON.parse(testAppJson));
-			if(step) await window.showWarningMessage(`step...`, 'continue?');
+			if(step) await window.showWarningMessage(testTitle, 'continue?');
 			assert.deepStrictEqual(editorText, original);
 		})
 		.catch( async err => {

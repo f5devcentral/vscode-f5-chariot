@@ -94,6 +94,12 @@ export function activate(context: ExtensionContext) {
                 .then(async text => {
 
                     logger.info(`f5.chariot.convert text found`);
+                    
+                    // standardize line returns to linux/mac
+                    if (/\r\n/.test(text)) {
+                        logger.info(`f5.chariot.convert converting "\\r\\n" to "\\n"`);
+                        text = text.replace(/\r\n/g, '\n');
+                    }
 
                     // const { declaration, metaData } = await acc(text);
                     const { declaration, metaData } = await main.mainAPI(text);

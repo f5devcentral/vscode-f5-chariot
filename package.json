@@ -2,7 +2,7 @@
 	"name": "vscode-f5-chariot",
 	"displayName": "F5 ACC Chariot",
 	"description": "(ACC) AS3 Configuration Converter integration",
-	"version": "1.12.0",
+	"version": "1.13.0",
 	"license": "Apache-2.0",
 	"publisher": "F5DevCentral",
 	"icon": "images/f5.png",
@@ -46,6 +46,8 @@
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
 		"lint": "eslint . --ext .ts,.tsx",
+		"pretest": "npm run compile && npm run lint",
+		"test": "node ./out/tests/runTests.js",
 		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {

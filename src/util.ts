@@ -82,12 +82,12 @@ export async function getText() {
  * @param dec AS3 declaration
  * @returns 
  */
-export async function cleanUniques(dec: As3Dec): Promise<As3Dec> {
+export async function cleanUniques(dec: {id?: string | undefined}): Promise<{id?: string | undefined}> {
     // take in as3 declarate, remove unique properties, return rest
     // id
 
-    if(dec.declaration?.id) {
-        delete dec.declaration.id;
+    if(dec.id) {
+        dec.id = undefined;
     }
     
     return dec;
