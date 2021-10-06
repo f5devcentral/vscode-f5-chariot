@@ -67,6 +67,11 @@ const accPackageJson = require('f5-as3-config-converter/package.json');
 
 export function activate(context: ExtensionContext) {
 
+    // process.on('unhandledRejection', error => {
+	// 	logger.error('--- unhandledRejection ---', error);
+	// });
+
+
     // log core acc package details
     logger.info(`ACC Details: `, {
         name: accPackageJson.name,

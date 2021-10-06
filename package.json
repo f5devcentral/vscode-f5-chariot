@@ -2,7 +2,7 @@
 	"name": "vscode-f5-chariot",
 	"displayName": "F5 ACC Chariot",
 	"description": "(ACC) AS3 Configuration Converter integration",
-	"version": "1.13.0",
+	"version": "1.15.0",
 	"license": "Apache-2.0",
 	"publisher": "F5DevCentral",
 	"icon": "images/f5.png",
@@ -64,7 +64,7 @@
 		"vscode-test": "^1.5.2"
 	},
 	"dependencies": {
-		"f5-as3-config-converter": "file:f5-as3-config-converter-v1.13.0-source.tgz",
+		"f5-as3-config-converter": "file:f5-as3-config-converter-v1.15.0-source.tgz",
 		"f5-conx-core": "github:dumpysquare/f5-conx-core"
 	}
 }
