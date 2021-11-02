@@ -2,11 +2,19 @@
 
 Greetings!
 
-This is an integration with ACC(Charon) to provide quick conversions within vscode.
+This is an integration with AS3-Configuration-Converter (ACC) to provide quick TMOS to AS3 conversions within vscode.
+
+Install via the VSCode marketplace here:  <https://marketplace.visualstudio.com/items?itemName=F5DevCentral.vscode-f5-chariot>
 
 This version of the extension has "batteries included" and does not require any external docker containers or dependencies.
 
-The version of this extension is locked with the version of the ACC project
+The version of this extension is locked with the version of the ACC project.
+
+It is recommended to utilize the output of the vscode-f5 config explorer output for conversions:
+
+- <https://f5devcentral.github.io/vscode-f5/#/README>
+- <https://f5devcentral.github.io/vscode-f5/#/config_explorer>
+- <https://marketplace.visualstudio.com/items?itemName=F5DevCentral.vscode-f5>
 
 Please open an issue with any comments, questions, enhancements, or bugs.
 
@@ -53,22 +61,6 @@ The extension is a single command/function to convert configuration to AS3.  By 
 This extension provides a single command:
 
 * `F5: Convert with ACC`: (via editor right-click) Converts entire editor text or selection with ACC
-
----
-
-## Demo
-
-The following shows a simple demo of the core goal of this project, which is take a tmos config and convert it to as3 within vscode so it can be deployed using the vscode-f5 extension features
-
-&nbsp;
-
-<!-- ![Basic Ouput Screenshot](./chariotOutput_v0.2.0_10.20.2020.PNG); -->
-<img src="./chariotOutput_v0.2.0_10.20.2020.PNG" alt="drawing" width="80%"/>
-
-&nbsp;
-
-<!-- ![Basic Demo](./chariot_demo_v0.2.0_10.20.2020.gif); -->
-<img src="./chariot_demo_v0.2.0_10.20.2020.gif" alt="drawing" width="80%"/>
 
 &nbsp;
 

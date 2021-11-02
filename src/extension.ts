@@ -30,19 +30,14 @@ import {
 
 import { Logger } from 'f5-conx-core';
 
-import { acc } from './accWrapper'
 import { EventEmitter } from 'events';
+
+// import main acc function (no TS types available at this time)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const main = require('f5-as3-config-converter/src/main');
 
 const logger = Logger.getLogger();
 logger.console = false;
-// delete process.env.F5_CONX_CORE_LOG_LEVEL;
-
-if (!process.env.F5_CONX_CORE_LOG_LEVEL) {
-    // if this isn't set by something else, set it to debug for dev
-    process.env.F5_CONX_CORE_LOG_LEVEL = 'DEBUG';
-}
-
-// const channels = window;
 
 // create OUTPUT channel
 const f5OutputChannel = window.createOutputChannel('f5-chariot');
@@ -66,13 +61,18 @@ const eventer = new EventEmitter()
     .on('log-warn', msg => logger.warning(msg))
     .on('log-error', msg => logger.error(msg));
 
-const accPackageJson = require('../acc/package.json');
+// import package details for logging
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const accPackageJson = require('f5-as3-config-converter/package.json');
 
 export function activate(context: ExtensionContext) {
 
-    // make output visible
-    f5OutputChannel.show();
+    // process.on('unhandledRejection', error => {
+	// 	logger.error('--- unhandledRejection ---', error);
+	// });
 
+
+    // log core acc package details
     logger.info(`ACC Details: `, {
         name: accPackageJson.name,
         author: accPackageJson.author,
@@ -85,27 +85,38 @@ export function activate(context: ExtensionContext) {
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.convert', async () => {
 
+        // make output visible
+        f5OutputChannel.show();
+
         logger.info(`f5.chariot.convert called`);
 
-        await window.withProgress({
+        return await window.withProgress({
             location: ProgressLocation.Notification,
             title: `Converting with ACC`,
         }, async () => {
 
-            await getText()
+            return await getText()
                 .then(async text => {
 
-                    logger.debug(`f5.chariot.convert text found`);
+                    logger.info(`f5.chariot.convert text found`);
+                    
+                    // standardize line returns to linux/mac
+                    if (/\r\n/.test(text)) {
+                        logger.info(`f5.chariot.convert converting "\\r\\n" to "\\n"`);
+                        text = text.replace(/\r\n/g, '\n');
+                    }
 
-                    const { declaration, metaData } = await acc(text);
-
-                    // display as3 output in editor
-                    displayJsonInEditor(declaration);
+                    // const { declaration, metaData } = await acc(text);
+                    const { declaration, metaData } = await main.mainAPI(text);
 
                     // log all the metadata
-                    logger.debug('ACC METADATA', metaData);
+                    logger.info('ACC METADATA', metaData);
+                    
+                    // display as3 output in editor
+                    return displayJsonInEditor(declaration);
                 })
                 .catch(err => {
+                    // log full error if we got one
                     logger.error('f5.chariot.convert failed with', err);
                 });
         });

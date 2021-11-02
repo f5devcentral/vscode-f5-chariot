@@ -14,37 +14,45 @@
  * limitations under the License.
  */
 
- 'use strict';
+'use strict';
 
-import { 
+import fs from 'fs';
+
+import {
     window,
     workspace
 } from "vscode";
 
-import { Logger } from 'f5-conx-core';
+import { As3Dec, Logger } from 'f5-conx-core';
 
 const logger = Logger.getLogger();
 
 
+/**
+ * import/require file to string variable
+ * @param path file path/name
+ * @returns file contents as string
+ */
+export function requireText(path: string): string {
+    return fs.readFileSync(require.resolve(path)).toString();
+}
 
 /**
  * display json in new editor window
  * @param item json object to display in new editor
  */
 export async function displayJsonInEditor(item: unknown): Promise<any> {
-    return workspace.openTextDocument({ 
-        language: 'json', 
-        content: JSON.stringify(item, undefined, 4) 
+    return workspace.openTextDocument({
+        language: 'json',
+        content: JSON.stringify(item, undefined, 4)
     })
-    .then( doc => 
-        window.showTextDocument(
-            doc, 
-            { 
-                preview: false 
-            }
-        )
-    );
+        .then(doc => {
+            window.showTextDocument(doc, { preview: false });
+            return doc;
+        });
 }
+
+
 
 /**
  * capture entire active editor text or selected text
@@ -53,17 +61,41 @@ export async function getText() {
 
     // get editor window
     const editor = window.activeTextEditor;
-    if (editor) {	
+    if (editor) {
         // capture selected text or all text in editor
         if (editor.selection.isEmpty) {
             return editor.document.getText();	// entire editor/doc window
         } else {
             return editor.document.getText(editor.selection);	// highlighted text
-        } 
+        }
     } else {
         logger.warning('getText was called, but no active editor... this should not happen');
         throw new Error('getText was called, but no active editor... this should not happen');
         // return; // No open/active text editor
     }
+
+}
+
+
+/**
+ * removes unique parameters like ID for tests
+ * @param dec AS3 declaration
+ * @returns 
+ */
+export async function cleanUniques(dec: {
+    id?: string | undefined
+    schemaVersion?: string | undefined
+}): Promise<{id?: string | undefined}> {
+    // take in as3 declarate, remove unique properties, return rest
+    // id
+
+    if(dec.id) {
+        dec.id = undefined;
+    }
+
+    if(dec.schemaVersion) {
+        dec.schemaVersion = undefined;
+    }
     
+    return dec;
 }

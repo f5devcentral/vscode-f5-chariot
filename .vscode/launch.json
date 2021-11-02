@@ -19,20 +19,18 @@
 			"preLaunchTask": "npm: watch"
 		},
 		{
-			"name": "updater Tests",
-			"type": "node",
+			"name": "Extension Tests",
+			"type": "extensionHost",
 			"request": "launch",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-r",
-                "ts-node/register",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/src/test/suite/deviceImport.tests.ts",
-            ],
-            "internalConsoleOptions": "neverOpen",
-            "protocol": "inspector",
-		}
+			"runtimeExecutable": "${execPath}",
+			"args": [
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionTestsPath=${workspaceFolder}/out/tests/suite/index"
+			],
+			"outFiles": [
+				"${workspaceFolder}/out/tests/**/*.js"
+			],
+			"preLaunchTask": "${defaultBuildTask}"
+		},
 	]
 }

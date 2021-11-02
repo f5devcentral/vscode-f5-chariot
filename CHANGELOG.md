@@ -8,7 +8,41 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
-## [1.11.0] - (04-15-2020)
+## [1.14.0-...]
+
+Please see https://github.com/f5devcentral/f5-as3-config-converter/releases for release information
+
+---
+
+## [1.13.0] - (07-07-2021)
+
+### Modified
+
+- ACC v1.13.0
+  - <https://github.com/f5devcentral/f5-as3-config-converter/releases/tag/v1.13.0>
+- Convert all /r/n to /n before processing with ACC
+  - ACC is based on linux
+- Utilize new f5-as3-config-converter exposed function
+  - Removed local custom acc wrapper function
+  - This should make the ACC package more standard and easily testable
+- Stated adding tests and artifacts
+
+---
+
+## [1.12.0] - (05-25-2021)
+
+### Modified
+
+- ACC v1.12.0
+  - <https://github.com/f5devcentral/f5-as3-config-converter/releases/tag/v1.12.0>
+- Minor code tweaks for house keeping
+- all logs are now info
+- extension only loads on first command execution
+- command execution makes output visible
+
+---
+
+## [1.11.0] - (04-15-2021)
 
 ### Modified
 
@@ -59,17 +93,19 @@ This version was primarily exploration on the ACC REST API which led to integrat
 - System informtion to logs for troubleshooting (Host OS, Platform, Release, and UserInfo)
 
 ## Modified
+
 - Added the following switches to the docker command to provide the most output
-    - --unsupported --unsupported-objects unSupported.json
+  - --unsupported --unsupported-objects unSupported.json
 
 ---
 
 ## [0.0.1] - (10-17-2020)
 
 ## initial
+
 - Right click option to convert text in editor with charon
-    - based on the .conf input
-    - outputs to coverted.as3.json so it should get as3 validation if vscode-f5 extension is installed
-    - options to set the output file and docker images
+  - based on the .conf input
+  - outputs to coverted.as3.json so it should get as3 validation if vscode-f5 extension is installed
+  - options to set the output file and docker images
 
 ---
