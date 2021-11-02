@@ -82,12 +82,19 @@ export async function getText() {
  * @param dec AS3 declaration
  * @returns 
  */
-export async function cleanUniques(dec: {id?: string | undefined}): Promise<{id?: string | undefined}> {
+export async function cleanUniques(dec: {
+    id?: string | undefined
+    schemaVersion?: string | undefined
+}): Promise<{id?: string | undefined}> {
     // take in as3 declarate, remove unique properties, return rest
     // id
 
     if(dec.id) {
         dec.id = undefined;
+    }
+
+    if(dec.schemaVersion) {
+        dec.schemaVersion = undefined;
     }
     
     return dec;

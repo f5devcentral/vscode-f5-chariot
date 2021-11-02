@@ -20,3 +20,5 @@ acc
 f5-as3-config-converter*.tar.gz
 # acc nodejs code packages
 f5-as3-config-converter*.tgz
+# 
+package-lock.json
