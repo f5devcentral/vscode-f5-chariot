@@ -46,7 +46,7 @@ export function requireText(path: string): string {
  * display json in new editor window
  * @param item json object to display in new editor
  */
-export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Promise<any> {
+export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Promise<TextDocument> {
         
     let vDoc: Uri;
     if (type === 'AS3') {
@@ -56,7 +56,7 @@ export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Pr
     }
 
 
-    workspace.openTextDocument(vDoc)
+    return await workspace.openTextDocument(vDoc)
         .then((a: TextDocument) => {
             window.showTextDocument(a, ViewColumn.Beside, false).then(e => {
                 e.edit(edit => {
@@ -65,6 +65,7 @@ export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Pr
                     edit.replace(new Range(startPosition, endPosition), JSON.stringify(text, undefined, 4));
                 });
             });
+            return a;
         });
 }
 

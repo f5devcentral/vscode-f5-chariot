@@ -12,6 +12,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 - Enabled Declarative Onboarding conversion flag
 - updated conversion output file name to include as3/do for schema reference
+- adjustect tests/utils to return editor opened from conversion output for better flow
 
 Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
 ---

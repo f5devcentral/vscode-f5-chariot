@@ -113,7 +113,7 @@ export function activate(context: ExtensionContext) {
                     logger.info('ACC METADATA', metaData);
                     
                     // display as3 output in editor
-                    return displayJsonInEditor(declaration, 'AS3');
+                    return await displayJsonInEditor(declaration, 'AS3');
                 })
                 .catch(err => {
                     // log full error if we got one
@@ -154,7 +154,7 @@ export function activate(context: ExtensionContext) {
                     logger.info('ACC METADATA', metaData);
                     
                     // display as3 output in editor
-                    return displayJsonInEditor(declaration, 'DO');
+                    return await displayJsonInEditor(declaration, 'DO');
                 })
                 .catch(err => {
                     // log full error if we got one
