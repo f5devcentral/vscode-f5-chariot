@@ -83,26 +83,26 @@ export function activate(context: ExtensionContext) {
     });
 
 
-    context.subscriptions.push(commands.registerCommand('f5.chariot.convert', async () => {
+    context.subscriptions.push(commands.registerCommand('f5.chariot.convertAS3', async () => {
 
         // make output visible
         f5OutputChannel.show();
 
-        logger.info(`f5.chariot.convert called`);
+        logger.info(`f5.chariot.convertAS3 called`);
 
         return await window.withProgress({
             location: ProgressLocation.Notification,
-            title: `Converting with ACC`,
+            title: `Converting to AS3 with ACC`,
         }, async () => {
 
             return await getText()
                 .then(async text => {
 
-                    logger.info(`f5.chariot.convert text found`);
+                    logger.info(`f5.chariot.convertAS3 text found`);
                     
                     // standardize line returns to linux/mac
                     if (/\r\n/.test(text)) {
-                        logger.info(`f5.chariot.convert converting "\\r\\n" to "\\n"`);
+                        logger.info(`f5.chariot.convertAS3 converting "\\r\\n" to "\\n"`);
                         text = text.replace(/\r\n/g, '\n');
                     }
 
@@ -113,11 +113,52 @@ export function activate(context: ExtensionContext) {
                     logger.info('ACC METADATA', metaData);
                     
                     // display as3 output in editor
-                    return displayJsonInEditor(declaration);
+                    return displayJsonInEditor(declaration, 'AS3');
                 })
                 .catch(err => {
                     // log full error if we got one
-                    logger.error('f5.chariot.convert failed with', err);
+                    logger.error('f5.chariot.convertAS3 failed with', err);
+                });
+        });
+
+    }));
+
+
+    context.subscriptions.push(commands.registerCommand('f5.chariot.convertDO', async () => {
+
+        // make output visible
+        f5OutputChannel.show();
+
+        logger.info(`f5.chariot.convertDO called`);
+
+        return await window.withProgress({
+            location: ProgressLocation.Notification,
+            title: `Converting to DO with ACC`,
+        }, async () => {
+
+            return await getText()
+                .then(async text => {
+
+                    logger.info(`f5.chariot.convert text found`);
+                    
+                    // standardize line returns to linux/mac
+                    if (/\r\n/.test(text)) {
+                        logger.info(`f5.chariot.convertDO converting "\\r\\n" to "\\n"`);
+                        text = text.replace(/\r\n/g, '\n');
+                    }
+
+                    // const { declaration, metaData } = await acc(text);
+                    const { declaration, metaData } = await main.mainAPI(text, { declarativeOnboarding: true });
+
+                    // log all the metadata
+                    logger.info('ACC METADATA', metaData);
+                    
+                    // display as3 output in editor
+                    return displayJsonInEditor(declaration, 'DO');
+                })
+                .catch(err => {
+                    // log full error if we got one
+                    logger.error('f5.chariot.convertDO failed with', err);
                 });
         });
 

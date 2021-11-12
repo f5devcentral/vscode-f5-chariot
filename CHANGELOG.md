@@ -8,6 +8,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.16.1] - (11-12-2021)
+
+- Enabled Declarative Onboarding conversion flag
+- updated conversion output file name to include as3/do for schema reference
+
+Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
+---
+
 ## [1.14.0-...]
 
 Please see https://github.com/f5devcentral/f5-as3-config-converter/releases for release information

@@ -1,0 +1,95 @@
+{
+    "schemaVersion": "1.0.0",
+    "class": "Device",
+    "async": true,
+    "Common": {
+        "0": {
+            "class": "Route"
+        },
+        "class": "Tenant",
+        "System": {
+            "class": "System",
+            "hostname": "devCloud01.benlab.io",
+            "consoleInactivityTimeout": 1200,
+            "mgmtDhcp": "dhcpv6",
+            "autoCheck": true,
+            "autoPhonehome": false
+        },
+        "ManagementIp_IPv4": {
+            "class": "ManagementIp",
+            "remark": "configured-statically",
+            "address": "10.200.244.110/24"
+        },
+        "Provision": {
+            "class": "Provision",
+            "apm": "nominal",
+            "avr": "nominal",
+            "ltm": "nominal"
+        },
+        "NTP": {
+            "class": "NTP",
+            "timezone": "US/Central"
+        },
+        "DNS": {
+            "class": "DNS",
+            "nameServers": [
+                "192.168.200.7",
+                "192.168.200.8"
+            ],
+            "search": [
+                "benlab.io"
+            ]
+        },
+        "f5-aws-dns": {
+            "class": "DNS_Resolver",
+            "forwardZones": [
+                {
+                    "name": "amazonaws.com",
+                    "nameservers": [
+                        "8.8.8.8:53"
+                    ]
+                },
+                {
+                    "name": "idservice.net",
+                    "nameservers": [
+                        "8.8.8.8:53"
+                    ]
+                }
+            ],
+            "routeDomain": "0"
+        },
+        "internal": {
+            "class": "VLAN",
+            "tag": 4094,
+            "interfaces": [
+                {
+                    "name": "1.0",
+                    "tagged": false
+                }
+            ]
+        },
+        "Analytics": {
+            "class": "Analytics"
+        },
+        "default": {
+            "class": "ManagementRoute",
+            "remark": "configured-statically",
+            "gw": "10.200.244.1",
+            "network": "default"
+        },
+        "HTTPD": {
+            "class": "HTTPD",
+            "authPamIdleTimeout": 12000
+        },
+        "http-tunnel": {
+            "class": "Tunnel",
+            "remark": "Tunnel for http-explicit profile",
+            "tunnelType": "/Common/tcp-forward"
+        },
+        "socks-tunnel": {
+            "class": "Tunnel",
+            "remark": "Tunnel for socks profile",
+            "tunnelType": "/Common/tcp-forward"
+        }
+    }
+}
