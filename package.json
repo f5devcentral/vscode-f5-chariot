@@ -2,7 +2,7 @@
 	"name": "vscode-f5-chariot",
 	"displayName": "F5 ACC Chariot",
 	"description": "(ACC) AS3 Configuration Converter integration",
-	"version": "1.16.0",
+	"version": "1.16.1",
 	"license": "Apache-2.0",
 	"publisher": "F5DevCentral",
 	"icon": "images/f5.png",
@@ -22,21 +22,31 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:f5.chariot.convert"
+		"onCommand:f5.chariot.convertAS3",
+		"onCommand:f5.chariot.convertDO"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "f5.chariot.convert",
-				"title": "Convert with ACC",
+				"command": "f5.chariot.convertAS3",
+				"title": "Convert to AS3 with ACC",
+				"category": "F5"
+			},
+			{
+				"command": "f5.chariot.convertDO",
+				"title": "Convert to DO with ACC",
 				"category": "F5"
 			}
 		],
 		"menus": {
 			"editor/context": [
 				{
-					"command": "f5.chariot.convert",
+					"command": "f5.chariot.convertAS3",
+					"group": "chariot"
+				},
+				{
+					"command": "f5.chariot.convertDO",
 					"group": "chariot"
 				}
 			]

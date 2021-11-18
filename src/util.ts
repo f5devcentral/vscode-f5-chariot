@@ -19,6 +19,11 @@
 import fs from 'fs';
 
 import {
+    Position,
+    Range,
+    TextDocument,
+    Uri,
+    ViewColumn,
     window,
     workspace
 } from "vscode";
@@ -41,14 +46,26 @@ export function requireText(path: string): string {
  * display json in new editor window
  * @param item json object to display in new editor
  */
-export async function displayJsonInEditor(item: unknown): Promise<any> {
-    return workspace.openTextDocument({
-        language: 'json',
-        content: JSON.stringify(item, undefined, 4)
-    })
-        .then(doc => {
-            window.showTextDocument(doc, { preview: false });
-            return doc;
+export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Promise<TextDocument> {
+        
+    let vDoc: Uri;
+    if (type === 'AS3') {
+        vDoc = Uri.parse("untitled:" + 'converted.as3.json');
+    } else {
+        vDoc = Uri.parse("untitled:" + 'converted.do.json');
+    }
+
+
+    return await workspace.openTextDocument(vDoc)
+        .then((a: TextDocument) => {
+            window.showTextDocument(a, ViewColumn.Beside, false).then(e => {
+                e.edit(edit => {
+                    const startPosition = new Position(0, 0);
+                    const endPosition = a.lineAt(a.lineCount - 1).range.end;
+                    edit.replace(new Range(startPosition, endPosition), JSON.stringify(text, undefined, 4));
+                });
+            });
+            return a;
         });
 }
 
