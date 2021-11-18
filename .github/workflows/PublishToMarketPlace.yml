@@ -26,10 +26,11 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: 12
+        node-version: 14
       
     - name: npm install everything
-      run: npm install
+      # https://docs.npmjs.com/cli/v8/commands/npm-ci
+      run: npm ci
 
     # - name: Publish to Open VSX Registry
     #   id: publishToOpenVSX
@@ -53,4 +54,4 @@ jobs:
         # extensionFile: ${{ steps.publishToOpenVSX.outputs.vsixPath }}
         # extensionFile: ${{ steps.get_release_name.outputs.name }}
         # packagePath: ''
-        # dryRun: true
+        dryRun: true
