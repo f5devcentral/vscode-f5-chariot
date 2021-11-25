@@ -58,26 +58,27 @@ suite('Core acc-chariot tests', () => {
 	test(testTitle, async () => {
 
 		// open a new text editor
-		await workspace.openTextDocument(testAppParsed)
+		return await workspace.openTextDocument(testAppParsed)
 			.then(async doc => {
 				//	show new text editor (make active)
 				await window.showTextDocument(doc);
 				// return doc;
+				await new Promise(f => setTimeout(f, 2000));
+
+				return await getText()
+					.then(async text => {
+						if (step) await window.showWarningMessage(testTitle, 'continue?');
+						return assert.deepStrictEqual(text, testAppText);
+					})
+					.catch(async err => {
+						console.error(err);
+						// pop up a prompt to show the error and allow for dev troubleshooting
+						return await window.showWarningMessage(`ERROR: ${err}`, 'continue?');
+					});
 			});
 
-		await new Promise(f => setTimeout(f, 2000));
 
 
-		await getText()
-			.then(async text => {
-				if (step) await window.showWarningMessage(testTitle, 'continue?');
-				assert.deepStrictEqual(text, testAppText);
-			})
-			.catch(async err => {
-				console.error(err);
-				// pop up a prompt to show the error and allow for dev troubleshooting
-				await window.showWarningMessage(`ERROR: ${err}`, 'continue?');
-			});
 
 	}).timeout(50000);
 
