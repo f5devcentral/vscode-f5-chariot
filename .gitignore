@@ -8,17 +8,16 @@ node_modules
 .vscode-test/
 # installable extension packages
 *.vsix
+
 # user app data for npm?
 *AppDataRoamingnpm
+
 # exclude input/output files for file workflow
 toConvert.conf
 converted.as3.json
 
-# original acc source files extracted from docker container
-acc
 # acc docker images
 f5-as3-config-converter*.tar.gz
+
 # acc nodejs code packages
-f5-as3-config-converter*.tgz
-# 
-package-lock.json
+# f5-as3-config-converter*.tgz
