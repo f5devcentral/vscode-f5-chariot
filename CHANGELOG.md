@@ -8,6 +8,15 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.16.2] - (11-25-2021)
+
+- Updated logger to f5-conx-core@v0.11.0
+- starting automated github actions testing and extension publishing
+
+Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
+
+---
+
 ## [1.16.1] - (11-12-2021)
 
 - Enabled Declarative Onboarding conversion flag
@@ -15,11 +24,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 - adjustect tests/utils to return editor opened from conversion output for better flow
 
 Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
+
 ---
 
 ## [1.14.0-...]
 
-Please see https://github.com/f5devcentral/f5-as3-config-converter/releases for release information
+Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
 
 ---
 

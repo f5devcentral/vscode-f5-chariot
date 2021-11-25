@@ -28,9 +28,9 @@ import {
     workspace
 } from "vscode";
 
-import { As3Dec, Logger } from 'f5-conx-core';
+import Logger from 'f5-conx-core/dist/logger';
 
-const logger = Logger.getLogger();
+const logger = new Logger('F5_CHARIOT_LOG_LEVEL');
 
 
 /**
@@ -86,7 +86,7 @@ export async function getText() {
             return editor.document.getText(editor.selection);	// highlighted text
         }
     } else {
-        logger.warning('getText was called, but no active editor... this should not happen');
+        logger.warn('getText was called, but no active editor... this should not happen');
         throw new Error('getText was called, but no active editor... this should not happen');
         // return; // No open/active text editor
     }

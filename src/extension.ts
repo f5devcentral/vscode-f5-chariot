@@ -28,7 +28,7 @@ import {
     getText
 } from './util';
 
-import { Logger } from 'f5-conx-core';
+import Logger from 'f5-conx-core/dist/logger';
 
 import { EventEmitter } from 'events';
 
@@ -36,7 +36,7 @@ import { EventEmitter } from 'events';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const main = require('f5-as3-config-converter/src/main');
 
-const logger = Logger.getLogger();
+const logger = new Logger('F5_CHARIOT_LOG_LEVEL');
 logger.console = false;
 
 // create OUTPUT channel
@@ -58,7 +58,7 @@ const eventer = new EventEmitter()
     .on('log-http-response', msg => logger.httpResponse(msg))
     .on('log-debug', msg => logger.debug(msg))
     .on('log-info', msg => logger.info(msg))
-    .on('log-warn', msg => logger.warning(msg))
+    .on('log-warn', msg => logger.warn(msg))
     .on('log-error', msg => logger.error(msg));
 
 // import package details for logging
