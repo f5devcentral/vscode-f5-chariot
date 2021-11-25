@@ -34,8 +34,12 @@ suite('Core acc-chariot tests', () => {
 	testTitle = 'open test tmos app config';
 	test(testTitle, async () => {
 
+		await new Promise(f => setTimeout(f, 2000));
+
 		//	clear all open editors
 		await commands.executeCommand('workbench.action.closeAllEditors');
+
+		await new Promise(f => setTimeout(f, 2000));
 
 		// open a new text editor
 		await workspace.openTextDocument(testAppParsed)
@@ -44,6 +48,8 @@ suite('Core acc-chariot tests', () => {
 			await window.showTextDocument(doc);
 			// return doc;
 		});
+
+		await new Promise(f => setTimeout(f, 2000));
 
 
 		await getText()
