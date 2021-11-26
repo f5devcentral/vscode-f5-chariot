@@ -52,6 +52,8 @@ suite('Core acc-chariot tests', () => {
 
 		await new Promise(f => setTimeout(f, 2000));
 
+		return;
+
 	}).timeout(5000);
 
 
@@ -115,7 +117,7 @@ suite('Core acc-chariot tests', () => {
 		//	clear all open editors
 		await commands.executeCommand('workbench.action.closeAllEditors');
 
-		await new Promise(f => setTimeout(f, 2000));
+		return await new Promise(f => setTimeout(f, 2000));
 
 	}).timeout(5000);
 
@@ -162,7 +164,7 @@ suite('Core acc-chariot tests', () => {
 		//	clear all open editors
 		await commands.executeCommand('workbench.action.closeAllEditors');
 
-		await new Promise(f => setTimeout(f, 2000));
+		return await new Promise(f => setTimeout(f, 2000));
 
 	}).timeout(5000);
 });
