@@ -65,7 +65,7 @@ suite('Core acc-chariot tests', () => {
 				// return doc;
 				await new Promise(f => setTimeout(f, 2000));
 
-				return await getText()
+				return await getText(doc)
 					.then(async text => {
 						if (step) await window.showWarningMessage(testTitle, 'continue?');
 						return assert.deepStrictEqual(text, testAppText);

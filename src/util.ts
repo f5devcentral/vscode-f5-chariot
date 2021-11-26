@@ -46,8 +46,8 @@ export function requireText(path: string): string {
  * display json in new editor window
  * @param item json object to display in new editor
  */
-export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Promise<TextDocument> {
-        
+export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3'): Promise<TextDocument> {
+
     let vDoc: Uri;
     if (type === 'AS3') {
         vDoc = Uri.parse("untitled:" + 'converted.as3.json');
@@ -74,9 +74,9 @@ export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3' ): Pr
 /**
  * capture entire active editor text or selected text
  */
-export async function getText() {
+export async function getText(doc?: TextDocument) {
 
-    // get editor window
+    // get editor window - should only happen from right-click
     const editor = window.activeTextEditor;
     if (editor) {
         // capture selected text or all text in editor
@@ -85,6 +85,9 @@ export async function getText() {
         } else {
             return editor.document.getText(editor.selection);	// highlighted text
         }
+    } else if (doc) {
+        // got doc definition and no editor, so this should be automated tests
+        return doc.getText();
     } else {
         logger.warn('getText was called, but no active editor... this should not happen');
         throw new Error('getText was called, but no active editor... this should not happen');
@@ -102,17 +105,17 @@ export async function getText() {
 export async function cleanUniques(dec: {
     id?: string | undefined
     schemaVersion?: string | undefined
-}): Promise<{id?: string | undefined}> {
+}): Promise<{ id?: string | undefined }> {
     // take in as3 declarate, remove unique properties, return rest
     // id
 
-    if(dec.id) {
+    if (dec.id) {
         dec.id = undefined;
     }
 
-    if(dec.schemaVersion) {
+    if (dec.schemaVersion) {
         dec.schemaVersion = undefined;
     }
-    
+
     return dec;
 }
