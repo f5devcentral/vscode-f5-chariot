@@ -17,11 +17,11 @@ const testDo = path.join(__dirname, '..', '..', '..', 'artifacts', 'base.do.json
 
 const testAppText = requireText(testAppConf);
 const testAppJson = requireText(testAppAS3);
-const testAppParsed = Uri.parse(testAppConf);
+const testAppParsed = Uri.file(testAppConf);
 
 const testDoText = requireText(testDoConf);
 const testDoJson = requireText(testDo);
-const testDoParsed = Uri.parse(testDoConf);
+const testDoParsed = Uri.file(testDoConf);
 
 // flag to step through tests for debugging
 // eslint-disable-next-line prefer-const
@@ -54,8 +54,8 @@ suite('Core acc-chariot tests', () => {
 
 	}).timeout(5000);
 
-	testTitle = 'open test tmos app config';
-	test(testTitle, async () => {
+
+	test('open test tmos app config', async () => {
 
 		// open a new text editor
 		return await workspace.openTextDocument(testAppParsed)
@@ -73,7 +73,7 @@ suite('Core acc-chariot tests', () => {
 					.catch(async err => {
 						console.error(err);
 						// pop up a prompt to show the error and allow for dev troubleshooting
-						return await window.showWarningMessage(`ERROR: ${err}`, 'continue?');
+						// return await window.showWarningMessage(`ERROR: ${err}`, 'continue?');
 					});
 			});
 
