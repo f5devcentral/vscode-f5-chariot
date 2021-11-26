@@ -91,9 +91,10 @@ jobs:
       - uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_TOKEN: ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.VSIX_PATH }}
           asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
-      - run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
+      - run: vsce publish -p "$PUBLISH_TOKEN"
