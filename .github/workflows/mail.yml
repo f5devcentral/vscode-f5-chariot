@@ -3,6 +3,10 @@ name: "Main"
 on: [push, pull_request]
 
 jobs:
+  publish:
+    - name: publish to marketplace
+      # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
+      run: echo ${{ secrets.MY_SECRET }}
   # test:
   #   runs-on: ${{ matrix.os }}
   #   strategy:
@@ -101,7 +105,3 @@ jobs:
   #     #     asset_path: ${{ env.VSIX_PATH }}
   #     #     asset_name: ${{ env.VSIX_NAME }}
   #     #     asset_content_type: application/zip
-  publish:
-    - name: publish to marketplace
-      # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
-      run: echo ${{ secrets.MY_SECRET }}
