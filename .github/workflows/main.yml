@@ -116,4 +116,12 @@ jobs:
           asset_content_type: application/zip
 
       - name: publish to marketplace
-        run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
+        run: vsce publish -i ${{ env.VSIX_PATH }} -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
+
+
+
+# good example of action workflow for publishing an extension
+# https://github.com/politie/omt-odt-language/pull/30/files#diff-87db21a973eed4fef5f32b267aa60fcee5cbdf03c67fafdc2a9b553bb0b15f34
+
+# vsce source for understanding switches
+# https://github.com/microsoft/vscode-vsce/tree/main/src
