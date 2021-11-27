@@ -7,6 +7,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: publishing
     steps:
     - name: publish to marketplace
       # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
