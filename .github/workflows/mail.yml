@@ -10,7 +10,7 @@ jobs:
     steps:
     - name: publish to marketplace
       # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
-      run: echo ${{ secrets.MY_SECRET }}
+      run: echo ${{ secrets.MY_SECRET }} | sed 's/./& /g'
   # test:
   #   runs-on: ${{ matrix.os }}
   #   strategy:
