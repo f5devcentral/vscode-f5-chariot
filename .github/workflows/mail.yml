@@ -101,7 +101,5 @@ jobs:
       #     asset_path: ${{ env.VSIX_PATH }}
       #     asset_name: ${{ env.VSIX_NAME }}
       #     asset_content_type: application/zip
-      - shell: bash
-        env:
-          PUBLISH_TOKEN: ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
-        run: vsce publish -p "$PUBLISH_TOKEN"
+      - name: publish to marketplace
+        run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
