@@ -1,9 +1,13 @@
 name: "Main"
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
 
 jobs:
   publish:
+    runs-on: ubuntu-latest
+    steps:
     - name: publish to marketplace
       # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
       run: echo ${{ secrets.MY_SECRET }}
