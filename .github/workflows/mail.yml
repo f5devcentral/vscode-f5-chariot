@@ -102,6 +102,6 @@ jobs:
   #     #     asset_name: ${{ env.VSIX_NAME }}
   #     #     asset_content_type: application/zip
   publish:
-      - name: publish to marketplace
-        # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
-        run: echo ${{ secrets.MY_SECRET }}
+    - name: publish to marketplace
+      # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
+      run: echo ${{ secrets.MY_SECRET }}
