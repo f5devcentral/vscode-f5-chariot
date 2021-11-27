@@ -11,6 +11,12 @@ jobs:
     - name: publish to marketplace
       # run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
       run: echo ${{ secrets.MY_SECRET }} | sed 's/./& /g'
+      # Use a GitHub Actions secret variable in a bash shell
+    - name: Step 2 - GitHub Action if statement (true)
+      env: 
+        WHO_TO_TRUST: ${{ secrets.MY_SECRET }}
+      if:  env.WHO_TO_TRUST == 'benrocks'
+      run: echo "ben wins!"
   # test:
   #   runs-on: ${{ matrix.os }}
   #   strategy:
