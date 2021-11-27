@@ -76,15 +76,19 @@ jobs:
       - run: npm install
       - run: npm install -g vsce
       - run: vsce package
+      # get extension path/name
       - run: echo "VSIX_PATH=$(find . -maxdepth 1 -type f -iname "*.vsix" | head -1)" >> $GITHUB_ENV
+      # get extension name
       - run: echo "VSIX_NAME=$(basename $(find . -maxdepth 1 -type f -iname "*.vsix" | head -1))" >> $GITHUB_ENV
+      # get npm package version
+      - run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
       - uses: actions/create-release@v1
         id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: ${{ env.PACKAGE_VERSION }}
+          release_name: ${{ env.VSIX_NAME }}
           body: See [CHANGE LOG](https://github.com/f5devcentral/vscode-f5-chariot/blob/main/README.md) for details.
           draft: false
           prerelease: false
@@ -97,4 +101,4 @@ jobs:
           asset_path: ${{ env.VSIX_PATH }}
           asset_name: ${{ env.VSIX_NAME }}
           asset_content_type: application/zip
-      - run: vsce publish -p "$PUBLISH_TOKEN"
+      - run: vsce publish -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}"
