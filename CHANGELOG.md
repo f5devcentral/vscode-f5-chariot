@@ -8,10 +8,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.16.3] - (11-28-2021)
+
+- github action automation done
+  - added open-vsix publishing step
+
+---
+
 ## [1.16.2] - (11-25-2021)
 
 - Updated logger to f5-conx-core@v0.11.0
-- starting automated github actions testing and extension publishing
+- automated github actions testing and extension publishing
 
 Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
 

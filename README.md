@@ -1,7 +1,7 @@
 
 # vscode-f5-chariot
 
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![Main](https://github.com/f5devcentral/vscode-f5-chariot/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/f5devcentral/vscode-f5-chariot/actions/workflows/main.yml)
 ![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/F5DevCentral.vscode-f5-chariot?style=plastic)
 
 Greetings!
