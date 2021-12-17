@@ -57,7 +57,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: install node deps
-        run: npm ci
+        run: npm install
 
       - name: install vscode marketplace cli (vsce)
         run: npm install -g vsce
