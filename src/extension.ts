@@ -118,13 +118,13 @@ export function activate(context: ExtensionContext) {
 
                     try {
                         const a = await (await commands.getCommands(true)).filter( x => x === 'f5.injectSchemaRef');
-                        commands.executeCommand('f5.injectSchemaRef')
-                        logger.info('f5 atc schema injected')
+                        commands.executeCommand('f5.injectSchemaRef');
+                        logger.info('f5 atc schema injected');
                     } catch (e) {
-                        logger.info('f5 atc schema injection failed', e)
+                        logger.info('f5 atc schema injection failed', e);
                     }
 
-                    return convertedAs3editor
+                    return convertedAs3editor;
                 })
                 .catch(err => {
                     // log full error if we got one

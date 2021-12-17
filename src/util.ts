@@ -46,12 +46,12 @@ export function requireText(path: string): string {
  * display json in new editor window
  * @param item json object to display in new editor
  */
- export async function displayJsonInEditor2(item: object): Promise<any> {
+ export async function displayJsonInEditor2(item: unknown): Promise<TextDocument> {
     const editor = await workspace.openTextDocument({ 
         language: 'json', 
         content: JSON.stringify(item, undefined, 4) 
-    })
-    await window.showTextDocument(editor, { preview: false })
+    });
+    await window.showTextDocument(editor, { preview: false });
     return editor;
 } 
 
@@ -94,7 +94,7 @@ export async function getEditorText(doc?: TextDocument) {
     if (doc) {
         const d1 = doc.getText();
         return d1;
-    };
+    }
 
     // get editor window - should only happen from right-click
     const editor = window.activeTextEditor;
@@ -126,7 +126,7 @@ export async function cleanUniques(dec: any): Promise<unknown> {
     // take in as3 declarate, remove unique properties, return rest
     
     // re-assing the core as3 declartion
-    if (dec.declaration) dec = dec.declaration
+    if (dec.declaration) dec = dec.declaration;
 
     // new way to sanitize fields
     delete dec.id;

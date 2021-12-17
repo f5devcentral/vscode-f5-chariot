@@ -76,5 +76,23 @@
 	"dependencies": {
 		"f5-automation-config-converter": "git://github.com/f5devcentral/f5-automation-config-converter.git#v1.17.0",
 		"f5-conx-core": "^0.11.0"
+	},
+	"eslintConfig": {
+		"root": true,
+		"parser": "@typescript-eslint/parser",
+		"plugins": [
+			"@typescript-eslint"
+		],
+		"extends": [
+			"eslint:recommended",
+			"plugin:@typescript-eslint/recommended"
+		],
+		"rules": {
+			"semi": [2, "always"],
+			"@typescript-eslint/no-unused-vars": 0,
+			"@typescript-eslint/no-explicit-any": 0,
+			"@typescript-eslint/explicit-module-boundary-types": 0,
+			"@typescript-eslint/no-non-null-assertion": 0
+		}
 	}
 }
