@@ -46,6 +46,19 @@ export function requireText(path: string): string {
  * display json in new editor window
  * @param item json object to display in new editor
  */
+ export async function displayJsonInEditor2(item: object): Promise<any> {
+    const editor = await workspace.openTextDocument({ 
+        language: 'json', 
+        content: JSON.stringify(item, undefined, 4) 
+    })
+    await window.showTextDocument(editor, { preview: false })
+    return editor;
+} 
+
+/**
+ * display json in new editor window
+ * @param item json object to display in new editor
+ */
 export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3'): Promise<TextDocument> {
 
     let vDoc: Uri;
@@ -55,10 +68,12 @@ export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3'): Pro
         vDoc = Uri.parse("untitled:" + 'converted.do.json');
     }
 
-
-    return await workspace.openTextDocument(vDoc)
-        .then((a: TextDocument) => {
-            window.showTextDocument(a, ViewColumn.Beside, false).then(e => {
+    // for some reason, this doesn't always put the text and it errors when trying to save the document
+    // the other way (displayJsonInEditor2) displays a regular utitled doc with json language which can easily be saved
+    // the regular doc does not 
+    return workspace.openTextDocument(vDoc)
+        .then(async (a: TextDocument) => {
+            await window.showTextDocument(a, ViewColumn.Beside, false).then(e => {
                 e.edit(edit => {
                     const startPosition = new Position(0, 0);
                     const endPosition = a.lineAt(a.lineCount - 1).range.end;
@@ -74,7 +89,12 @@ export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3'): Pro
 /**
  * capture entire active editor text or selected text
  */
-export async function getText(doc?: TextDocument) {
+export async function getEditorText(doc?: TextDocument) {
+
+    if (doc) {
+        const d1 = doc.getText();
+        return d1;
+    };
 
     // get editor window - should only happen from right-click
     const editor = window.activeTextEditor;
@@ -85,9 +105,9 @@ export async function getText(doc?: TextDocument) {
         } else {
             return editor.document.getText(editor.selection);	// highlighted text
         }
-    } else if (doc) {
-        // got doc definition and no editor, so this should be automated tests
-        return doc.getText();
+    // } else if (doc) {
+    //     // got doc definition and no editor, so this should be automated tests
+    //     return doc.getText();
     } else {
         logger.warn('getText was called, but no active editor... this should not happen');
         throw new Error('getText was called, but no active editor... this should not happen');
@@ -104,18 +124,16 @@ export async function getText(doc?: TextDocument) {
  */
 export async function cleanUniques(dec: any): Promise<unknown> {
     // take in as3 declarate, remove unique properties, return rest
-
-    if (dec.id) {
-        dec.id = undefined;
-    }
-
-    if (dec.schemaVersion) {
-        dec.schemaVersion = undefined;
-    }
+    
+    // re-assing the core as3 declartion
+    if (dec.declaration) dec = dec.declaration
 
     // new way to sanitize fields
-    dec.remark = undefined;
-    dec.label = undefined;
+    delete dec.id;
+    delete dec.schemaVersion;
+    delete dec.remark;
+    delete dec.label;
+    delete dec['$schema'];
 
     return dec;
 }

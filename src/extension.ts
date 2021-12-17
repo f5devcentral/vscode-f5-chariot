@@ -25,7 +25,8 @@ import {
 
 import {
     displayJsonInEditor,
-    getText
+    displayJsonInEditor2,
+    getEditorText
 } from './util';
 
 import Logger from 'f5-conx-core/dist/logger';
@@ -34,7 +35,7 @@ import { EventEmitter } from 'events';
 
 // import main acc function (no TS types available at this time)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const main = require('f5-automation-config-converter/src/main');
+const acc = require('f5-automation-config-converter/src/main');
 
 const logger = new Logger('F5_CHARIOT_LOG_LEVEL');
 logger.console = false;
@@ -68,8 +69,8 @@ const accPackageJson = require('f5-automation-config-converter/package.json');
 export function activate(context: ExtensionContext) {
 
     // process.on('unhandledRejection', error => {
-	// 	logger.error('--- unhandledRejection ---', error);
-	// });
+    // 	logger.error('--- unhandledRejection ---', error);
+    // });
 
 
     // log core acc package details
@@ -83,7 +84,7 @@ export function activate(context: ExtensionContext) {
     });
 
 
-    context.subscriptions.push(commands.registerCommand('f5.chariot.convertAS3', async () => {
+    context.subscriptions.push(commands.registerCommand('f5.chariot.convertAS3', async (editor) => {
 
         // make output visible
         f5OutputChannel.show();
@@ -95,11 +96,11 @@ export function activate(context: ExtensionContext) {
             title: `Converting to AS3 with ACC`,
         }, async () => {
 
-            return await getText()
+            return await getEditorText(editor)
                 .then(async text => {
 
                     logger.info(`f5.chariot.convertAS3 text found`);
-                    
+
                     // standardize line returns to linux/mac
                     if (/\r\n/.test(text)) {
                         logger.info(`f5.chariot.convertAS3 converting "\\r\\n" to "\\n"`);
@@ -107,13 +108,23 @@ export function activate(context: ExtensionContext) {
                     }
 
                     // const { declaration, metaData } = await acc(text);
-                    const { declaration, metaData } = await main.mainAPI(text);
+                    const { declaration, metaData } = await acc.mainAPI(text);
 
                     // log all the metadata
                     logger.info('ACC METADATA', metaData);
-                    
+
                     // display as3 output in editor
-                    return await displayJsonInEditor(declaration, 'AS3');
+                    const convertedAs3editor = await displayJsonInEditor2(declaration);
+
+                    try {
+                        const a = await (await commands.getCommands(true)).filter( x => x === 'f5.injectSchemaRef');
+                        commands.executeCommand('f5.injectSchemaRef')
+                        logger.info('f5 atc schema injected')
+                    } catch (e) {
+                        logger.info('f5 atc schema injection failed', e)
+                    }
+
+                    return convertedAs3editor
                 })
                 .catch(err => {
                     // log full error if we got one
@@ -124,7 +135,7 @@ export function activate(context: ExtensionContext) {
     }));
 
 
-    context.subscriptions.push(commands.registerCommand('f5.chariot.convertDO', async () => {
+    context.subscriptions.push(commands.registerCommand('f5.chariot.convertDO', async (editor) => {
 
         // make output visible
         f5OutputChannel.show();
@@ -136,11 +147,11 @@ export function activate(context: ExtensionContext) {
             title: `Converting to DO with ACC`,
         }, async () => {
 
-            return await getText()
+            return await getEditorText(editor)
                 .then(async text => {
 
                     logger.info(`f5.chariot.convert text found`);
-                    
+
                     // standardize line returns to linux/mac
                     if (/\r\n/.test(text)) {
                         logger.info(`f5.chariot.convertDO converting "\\r\\n" to "\\n"`);
@@ -148,13 +159,14 @@ export function activate(context: ExtensionContext) {
                     }
 
                     // const { declaration, metaData } = await acc(text);
-                    const { declaration, metaData } = await main.mainAPI(text, { declarativeOnboarding: true });
+                    const { declaration, metaData } = await acc.mainAPI(text, { declarativeOnboarding: true });
 
                     // log all the metadata
                     logger.info('ACC METADATA', metaData);
-                    
+
                     // display as3 output in editor
-                    return await displayJsonInEditor(declaration, 'DO');
+                    const convertedDo = await displayJsonInEditor2(declaration);
+                    return convertedDo;
                 })
                 .catch(err => {
                     // log full error if we got one

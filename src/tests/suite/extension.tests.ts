@@ -1,12 +1,11 @@
 import * as assert from 'assert';
 import fs = require('fs');
 import path = require('path');
-import { beforeEach } from 'mocha';
 
 // You can import and use all API from the 'vscode' module
 // as well as import your extension to test it
 import { Uri, window, commands, workspace, TextDocument } from 'vscode';
-import { cleanUniques, getText, requireText } from '../../util';
+import { cleanUniques, getEditorText, requireText } from '../../util';
 
 // test file/path
 const testAppConf = path.join(__dirname, '..', '..', '..', 'artifacts', 'testApp.conf');
@@ -25,146 +24,78 @@ const testDoParsed = Uri.file(testDoConf);
 
 // flag to step through tests for debugging
 // eslint-disable-next-line prefer-const
-let step = false;
 // step = true;
 let testTitle: string;
 
 suite('Core acc-chariot tests', () => {
 	window.showInformationMessage('Starting main tests');
-	// beforeEach( function () {
-	// 	// await new Promise(f => setTimeout(f, 2000));
-
-	// 	setTimeout(() => console.log("clearing"), 2000);
-
-	// 	//	clear all open editors
-	// 	commands.executeCommand('workbench.action.closeAllEditors');
-
-	// 	setTimeout(() => console.log("clearing"), 2000);
-	// 	// return await new Promise(f => setTimeout(f, 2000));
-
-	// });
 
 	test('clearing all editors', async () => {
 
-		await new Promise(f => setTimeout(f, 2000));
+		//	clear all open editors
+		return await commands.executeCommand('workbench.action.closeAllEditors');
+
+	}).timeout(5000);
+
+	test('convert test app tmos to as3 with acc', async () => {
+
+		// open a new text editor
+		const appConfigEditor = await workspace.openTextDocument(testAppParsed)
+		.then(async doc => {
+			//	show new text editor (make active)
+			await window.showTextDocument(doc);
+			return doc;
+		});
+
+		// execute acc to pick up editor text and convert it
+		const editor = await commands.executeCommand('f5.chariot.convertAS3', appConfigEditor) as TextDocument;
+
+		await window.showTextDocument(editor.uri);
+
+		// get converted text
+		const converted = editor.getText();
+
+		const editorText = await cleanUniques(JSON.parse(converted));
+		const original = await cleanUniques(JSON.parse(testAppJson));
+		assert.deepStrictEqual(editorText, original);
+
+	}).timeout(50000);
+
+	test('clearing all editors', async () => {
+
 		//	clear all open editors
 		await commands.executeCommand('workbench.action.closeAllEditors');
-
-		await new Promise(f => setTimeout(f, 2000));
-
-		return;
 
 	}).timeout(5000);
 
 
-	test('open test tmos app config', async () => {
+
+	test('convert test app tmos to DO with acc', async () => {
 
 		// open a new text editor
-		return await workspace.openTextDocument(testAppParsed)
+		const baseConfigEditor = await workspace.openTextDocument(testDoParsed)
 			.then(async doc => {
 				//	show new text editor (make active)
 				await window.showTextDocument(doc);
-				// return doc;
-				await new Promise(f => setTimeout(f, 2000));
-
-				return await getText(doc)
-					.then(async text => {
-						if (step) await window.showWarningMessage(testTitle, 'continue?');
-						return assert.deepStrictEqual(text, testAppText);
-					})
-					.catch(async err => {
-						console.error(err);
-						// pop up a prompt to show the error and allow for dev troubleshooting
-						// return await window.showWarningMessage(`ERROR: ${err}`, 'continue?');
-					});
+				return doc;
 			});
-
-
-
-
-	}).timeout(50000);
-
-	testTitle = 'convert test app tmos to as3 with acc';
-	test(testTitle, async () => {
 
 		// execute acc to pick up editor text and convert it
-		const editor = await commands.executeCommand('f5.chariot.convertAS3') as TextDocument;
+		const editor = await commands.executeCommand('f5.chariot.convertDO', baseConfigEditor) as TextDocument;
 
-		// const a = window.activeTextEditor;
-		await window.showTextDocument(editor.uri);
+		// get converted text
+		const converted = editor.getText();
 
-		await new Promise(f => setTimeout(f, 2000));
-
-		await getText()
-			.then(async text => {
-				const editorText = await cleanUniques(JSON.parse(text));
-				const original = await cleanUniques(JSON.parse(testAppJson));
-				if (step) await window.showWarningMessage(testTitle, 'continue?');
-				assert.deepStrictEqual(editorText, original);
-			})
-			.catch(async err => {
-				console.error(err);
-				// pop up a prompt to show the error and allow for dev troubleshooting
-				// await window.showWarningMessage(err, 'continue?');
-			});
-
+		const editorText = await cleanUniques(JSON.parse(converted));
+		const original = await cleanUniques(JSON.parse(testDoJson));
+		assert.deepStrictEqual(editorText, original);
 
 	}).timeout(50000);
 
 	test('clearing all editors', async () => {
 
-		await new Promise(f => setTimeout(f, 2000));
 		//	clear all open editors
 		await commands.executeCommand('workbench.action.closeAllEditors');
-
-		return await new Promise(f => setTimeout(f, 2000));
-
-	}).timeout(5000);
-
-	testTitle = 'convert test app tmos to DO with acc';
-	test(testTitle, async () => {
-
-		// open a new text editor
-		await workspace.openTextDocument(testDoParsed)
-			.then(async doc => {
-				//	show new text editor (make active)
-				await window.showTextDocument(doc);
-				// return doc;
-			});
-
-		await new Promise(f => setTimeout(f, 2000));
-
-		// execute acc to pick up editor text and convert it
-		const editor = await commands.executeCommand('f5.chariot.convertDO') as TextDocument;
-
-		// const a = window.activeTextEditor;
-		await window.showTextDocument(editor.uri);
-
-		await new Promise(f => setTimeout(f, 2000));
-
-		await getText()
-			.then(async text => {
-				const editorText = await cleanUniques(JSON.parse(text));
-				const original = await cleanUniques(JSON.parse(testDoJson));
-				if (step) await window.showWarningMessage(testTitle, 'continue?');
-				assert.deepStrictEqual(editorText, original);
-			})
-			.catch(async err => {
-				console.error(err);
-				// pop up a prompt to show the error and allow for dev troubleshooting
-				// await window.showWarningMessage(err, 'continue?');
-			});
-
-
-	}).timeout(50000);
-
-	test('clearing all editors', async () => {
-
-		await new Promise(f => setTimeout(f, 2000));
-		//	clear all open editors
-		await commands.executeCommand('workbench.action.closeAllEditors');
-
-		return await new Promise(f => setTimeout(f, 2000));
 
 	}).timeout(5000);
 });

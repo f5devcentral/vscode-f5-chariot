@@ -8,6 +8,17 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.17.0] - (12-17-2021)
+
+- update to v1.17.0 acc
+  - Please see <https://github.com/f5devcentral/f5-as3-config-converter/releases> for release information
+- smoothed out tests
+- changed output editor to standard 'untitled', but then injects the atc apropriate schema from the vscode-f5 command 'f5.injectSchemaRef'
+  - this will continue the effort to make editing of the output easy with schema validation
+  - should silently fail if command not available
+
+---
+
 ## [1.16.3] - (11-28-2021)
 
 - github action automation done
