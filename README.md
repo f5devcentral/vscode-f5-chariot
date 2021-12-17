@@ -28,11 +28,11 @@ Thanks!
 
 ## Other Pages
 
-### Main f5-as3-config-converter (ACC) Repo
+### Main f5-automation-config-converter (ACC) Repo
 
-* [Repo](https://github.com/f5devcentral/f5-as3-config-converter)
-* [Issues](https://github.com/f5devcentral/f5-as3-config-converter/issues)
-* [Releases](https://github.com/f5devcentral/f5-as3-config-converter/releases)
+* [Repo](https://github.com/f5devcentral/f5-automation-config-converter)
+* [Issues](https://github.com/f5devcentral/f5-automation-config-converter/issues)
+* [Releases](https://github.com/f5devcentral/f5-automation-config-converter/releases)
 
 ### Other pages from this repo
 

@@ -98,16 +98,12 @@ export async function getText(doc?: TextDocument) {
 
 
 /**
- * removes unique parameters like ID for tests
+ * sanitize dec from params that can change but are not critical to deployment (ex. id/schemaVersion/remark/label)
  * @param dec AS3 declaration
  * @returns 
  */
-export async function cleanUniques(dec: {
-    id?: string | undefined
-    schemaVersion?: string | undefined
-}): Promise<{ id?: string | undefined }> {
+export async function cleanUniques(dec: any): Promise<unknown> {
     // take in as3 declarate, remove unique properties, return rest
-    // id
 
     if (dec.id) {
         dec.id = undefined;
@@ -116,6 +112,10 @@ export async function cleanUniques(dec: {
     if (dec.schemaVersion) {
         dec.schemaVersion = undefined;
     }
+
+    // new way to sanitize fields
+    dec.remark = undefined;
+    dec.label = undefined;
 
     return dec;
 }

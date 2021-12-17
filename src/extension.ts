@@ -34,7 +34,7 @@ import { EventEmitter } from 'events';
 
 // import main acc function (no TS types available at this time)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const main = require('f5-as3-config-converter/src/main');
+const main = require('f5-automation-config-converter/src/main');
 
 const logger = new Logger('F5_CHARIOT_LOG_LEVEL');
 logger.console = false;
@@ -63,7 +63,7 @@ const eventer = new EventEmitter()
 
 // import package details for logging
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const accPackageJson = require('f5-as3-config-converter/package.json');
+const accPackageJson = require('f5-automation-config-converter/package.json');
 
 export function activate(context: ExtensionContext) {
 
