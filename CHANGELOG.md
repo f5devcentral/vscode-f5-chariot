@@ -8,6 +8,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.17.1] - (12-26-2021)
+
+- fix for bug -> conversion failing with - f5.chariot.convertAS3 failed with [TypeError: doc.getText is not a functio #7
+  - <https://github.com/f5devcentral/vscode-f5-chariot/issues/7>
+
+---
+
 ## [1.17.0] - (12-17-2021)
 
 - update to v1.17.0 acc

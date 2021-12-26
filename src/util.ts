@@ -46,14 +46,14 @@ export function requireText(path: string): string {
  * display json in new editor window
  * @param item json object to display in new editor
  */
- export async function displayJsonInEditor2(item: unknown): Promise<TextDocument> {
-    const editor = await workspace.openTextDocument({ 
-        language: 'json', 
-        content: JSON.stringify(item, undefined, 4) 
+export async function displayJsonInEditor2(item: unknown): Promise<TextDocument> {
+    const editor = await workspace.openTextDocument({
+        language: 'json',
+        content: JSON.stringify(item, undefined, 4)
     });
     await window.showTextDocument(editor, { preview: false });
     return editor;
-} 
+}
 
 /**
  * display json in new editor window
@@ -89,25 +89,32 @@ export async function displayJsonInEditor(text: string, type: 'DO' | 'AS3'): Pro
 /**
  * capture entire active editor text or selected text
  */
-export async function getEditorText(doc?: TextDocument) {
+export async function getEditorText(doc?: any) {
 
-    if (doc) {
-        const d1 = doc.getText();
-        return d1;
+    let isDocUri = false;
+    if (
+        doc.path &&
+        doc.scheme
+    ) {
+        // doc is path.uri object
+        isDocUri = true;
     }
 
     // get editor window - should only happen from right-click
     const editor = window.activeTextEditor;
-    if (editor) {
+    if (editor && isDocUri) {
         // capture selected text or all text in editor
         if (editor.selection.isEmpty) {
             return editor.document.getText();	// entire editor/doc window
         } else {
             return editor.document.getText(editor.selection);	// highlighted text
         }
-    // } else if (doc) {
-    //     // got doc definition and no editor, so this should be automated tests
-    //     return doc.getText();
+
+    // is doc => vscode.Textdocument param from tests?
+    // eslint-disable-next-line no-prototype-builtins
+    } else if (doc.hasOwnProperty('getText')) {
+        // got doc definition and no editor, so this should be automated tests
+        return doc.getText();
     } else {
         logger.warn('getText was called, but no active editor... this should not happen');
         throw new Error('getText was called, but no active editor... this should not happen');
@@ -124,7 +131,7 @@ export async function getEditorText(doc?: TextDocument) {
  */
 export async function cleanUniques(dec: any): Promise<unknown> {
     // take in as3 declarate, remove unique properties, return rest
-    
+
     // re-assing the core as3 declartion
     if (dec.declaration) dec = dec.declaration;
 
