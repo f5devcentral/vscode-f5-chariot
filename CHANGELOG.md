@@ -8,6 +8,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.18.0] - (01-26-2022)
+
+- acc 1.18 release
+  - <https://github.com/f5devcentral/f5-automation-config-converter>
+
+---
+
 ## [1.17.1] - (12-26-2021)
 
 - fix for bug -> conversion failing with - f5.chariot.convertAS3 failed with [TypeError: doc.getText is not a functio #7
