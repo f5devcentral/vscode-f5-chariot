@@ -1,10 +1,17 @@
 {
+    "$schema": "https://raw.githubusercontent.com/F5Networks/f5-declarative-onboarding/master/src/schema/latest/remote.schema.json",
     "schemaVersion": "1.0.0",
     "class": "Device",
     "async": true,
     "Common": {
         "0": {
-            "class": "Route"
+            "class": "RouteDomain",
+            "id": "0",
+            "vlans": [
+                "/Common/http-tunnel",
+                "/Common/socks-tunnel",
+                "/Common/internal"
+            ]
         },
         "class": "Tenant",
         "System": {
@@ -40,24 +47,6 @@
                 "benlab.io"
             ]
         },
-        "f5-aws-dns": {
-            "class": "DNS_Resolver",
-            "forwardZones": [
-                {
-                    "name": "amazonaws.com",
-                    "nameservers": [
-                        "8.8.8.8:53"
-                    ]
-                },
-                {
-                    "name": "idservice.net",
-                    "nameservers": [
-                        "8.8.8.8:53"
-                    ]
-                }
-            ],
-            "routeDomain": "0"
-        },
         "internal": {
             "class": "VLAN",
             "tag": 4094,
@@ -77,19 +66,14 @@
             "gw": "10.200.244.1",
             "network": "default"
         },
+        "/Common/comm-public": {
+            "source": "default",
+            "class": "SnmpCommunity",
+            "name": "public"
+        },
         "HTTPD": {
             "class": "HTTPD",
             "authPamIdleTimeout": 12000
-        },
-        "http-tunnel": {
-            "class": "Tunnel",
-            "remark": "Tunnel for http-explicit profile",
-            "tunnelType": "/Common/tcp-forward"
-        },
-        "socks-tunnel": {
-            "class": "Tunnel",
-            "remark": "Tunnel for socks profile",
-            "tunnelType": "/Common/tcp-forward"
         }
     }
 }

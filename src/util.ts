@@ -129,11 +129,12 @@ export async function getEditorText(doc?: any) {
  * @param dec AS3 declaration
  * @returns 
  */
-export async function cleanUniques(dec: any): Promise<unknown> {
+export async function cleanUniques(dec: any): Promise<Record<string, unknown>> {
     // take in as3 declarate, remove unique properties, return rest
 
     // re-assing the core as3 declartion
     if (dec.declaration) dec = dec.declaration;
+    if (dec.dec) dec = dec.dec;
 
     // new way to sanitize fields
     delete dec.id;
