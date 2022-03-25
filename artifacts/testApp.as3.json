@@ -1,7 +1,7 @@
 {
     "$schema": "https://raw.githubusercontent.com/F5Networks/f5-appsvcs-extension/master/schema/latest/as3-schema.json",
     "class": "AS3",
-    "dec": {
+    "declaration": {
         "class": "ADC",
         "schemaVersion": "3.34.0",
         "id": "urn:uuid:4e380b90-10a6-4c2f-9337-2156568b665b",
@@ -28,7 +28,6 @@
                         "192.168.1.21"
                     ],
                     "virtualPort": 443,
-                    "persistenceMethods": [],
                     "snat": "auto"
                 },
                 "app1_t80_pool": {
@@ -73,7 +72,6 @@
                         "192.168.1.21"
                     ],
                     "virtualPort": 80,
-                    "persistenceMethods": [],
                     "snat": "none"
                 }
             }
