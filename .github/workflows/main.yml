@@ -65,6 +65,9 @@ jobs:
       - name: install open-vsix marketplace cli (ovsx)
         run: npm install -g ovsx
 
+      - name: install teem keys
+        run: echo "${{ secrets.F5_TEEM_KEY_PROD }}" >> TEEM_KEY
+
       - name: package extension
         run: vsce package
 
