@@ -32,6 +32,7 @@ import {
 import Logger from 'f5-conx-core/dist/logger';
 
 import { EventEmitter } from 'events';
+import { loadTeemKey } from './loadTeem';
 
 // import main acc function (no TS types available at this time)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -83,6 +84,7 @@ export function activate(context: ExtensionContext) {
         repository: accPackageJson.repository.url
     });
 
+    loadTeemKey(context);
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.convertAS3', async (editor) => {
 
