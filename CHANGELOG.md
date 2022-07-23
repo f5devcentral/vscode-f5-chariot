@@ -8,6 +8,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.22.0] - (07-23-2022)
+
+- acc 1.22.0 release
+  - <https://github.com/f5devcentral/f5-automation-config-converter#v1.22.0>
+
+---
+
 ## [1.19.2] - (03-23-2022)
 
 - acc 1.19.2 release
