@@ -110,7 +110,11 @@ export function activate(context: ExtensionContext) {
                     }
 
                     // const { declaration, metaData } = await acc(text);
-                    const { declaration, metaData } = await acc.mainAPI(text);
+                    const { declaration, metaData } = await acc.mainAPI(text)
+                        .catch((accErr: Error) => {
+                            logger.error('ACC parsing failed with', accErr);
+                            throw accErr;
+                        });
 
                     // log all the metadata
                     logger.info('ACC METADATA', metaData);

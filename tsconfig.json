@@ -10,7 +10,8 @@
 		"strict": true,
 		"rootDir": "src",
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"skipLibCheck": true
 	},
 	"exclude": [
 		"node_modules",

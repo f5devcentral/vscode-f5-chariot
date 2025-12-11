@@ -8,6 +8,15 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [1.22.0] - (12-11-2025)
+
+- ACC 1.126.0 release
+  - <https://github.com/f5devcentral/f5-automation-config-converter>
+- Updated ESLint to v8.x and @typescript-eslint packages to v5.x for AJV 8 compatibility
+- Scoped AJV override to f5-automation-config-converter dependency
+
+---
+
 ## [1.19.2] - (03-23-2022)
 
 - acc 1.19.2 release

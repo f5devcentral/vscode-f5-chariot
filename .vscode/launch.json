@@ -32,5 +32,19 @@
 			],
 			"preLaunchTask": "${defaultBuildTask}"
 		},
+        {
+            "name": "Debug current test",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-r",
+                "ts-node/register",
+                "--no-timeout",
+                "--colors",
+                "${file}",
+            ],
+            "internalConsoleOptions": "neverOpen",
+        }
 	]
 }
