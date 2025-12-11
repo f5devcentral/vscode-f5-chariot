@@ -28,6 +28,7 @@
                         "192.168.1.21"
                     ],
                     "virtualPort": 443,
+                    "persistenceMethods": [],
                     "snat": "auto"
                 },
                 "app1_t80_pool": {
@@ -35,9 +36,15 @@
                         {
                             "addressDiscovery": "static",
                             "servicePort": 80,
-                            "serverAddresses": [
-                                "192.168.1.22",
-                                "192.168.1.23"
+                            "servers": [
+                                {
+                                    "name": "app1_Node1",
+                                    "address": "192.168.1.22"
+                                },
+                                {
+                                    "name": "app1_Node2",
+                                    "address": "192.168.1.23"
+                                }
                             ],
                             "shareNodes": true
                         }
@@ -72,6 +79,7 @@
                         "192.168.1.21"
                     ],
                     "virtualPort": 80,
+                    "persistenceMethods": [],
                     "snat": "none"
                 }
             }

@@ -4,23 +4,30 @@
     "class": "Device",
     "async": true,
     "Common": {
-        "0": {
-            "class": "RouteDomain",
-            "id": "0",
-            "vlans": [
-                "/Common/http-tunnel",
-                "/Common/socks-tunnel",
-                "/Common/internal"
-            ]
-        },
         "class": "Tenant",
         "System": {
             "class": "System",
             "hostname": "devCloud01.benlab.io",
             "consoleInactivityTimeout": 1200,
-            "mgmtDhcp": "dhcpv6",
+            "mgmtDhcpEnabled": true,
             "autoCheck": true,
             "autoPhonehome": false
+        },
+        "Authentication": {
+            "class": "Authentication",
+            "fallback": true,
+            "remoteUsersDefaults": {
+                "role": "admin",
+                "terminalAccess": "tmsh"
+            },
+            "radius": {
+                "servers": {
+                    "primary": {
+                        "secret": "",
+                        "server": "10.200.244.1"
+                    }
+                }
+            }
         },
         "ManagementIp_IPv4": {
             "class": "ManagementIp",
