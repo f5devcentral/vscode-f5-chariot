@@ -26,11 +26,6 @@
 		"onCommand:f5.chariot.convertDO"
 	],
 	"main": "./out/extension.js",
-	"files": [
-		"out/**",
-		"images/**",
-		"node_modules/**"
-	],
 	"contributes": {
 		"commands": [
 			{
