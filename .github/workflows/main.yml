@@ -6,7 +6,7 @@ on:
     branches: [main]
 
 env:
-  NODE_VERSION: 14.x
+  NODE_VERSION: 20.x
 
 jobs:
 
@@ -17,8 +17,8 @@ jobs:
         os: [windows-latest, ubuntu-latest, macos-latest]
     name: Test on ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
       - run: /usr/bin/Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 & echo "Started xvfb"
@@ -26,7 +26,7 @@ jobs:
         if: ${{ success() && matrix.os == 'ubuntu-latest' }}
       - run: npm install
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         env:
           cache-name: cache-node-modules
         with:
@@ -40,7 +40,7 @@ jobs:
       - run: npm test
         env:
           DISPLAY: ":99.0"
-        
+
   package-release-publish:
     runs-on: ubuntu-latest
     environment: publishing
@@ -49,10 +49,10 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: setup node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -60,7 +60,7 @@ jobs:
         run: npm install
 
       - name: install vscode marketplace cli (vsce)
-        run: npm install -g vsce
+        run: npm install -g @vscode/vsce
 
       - name: install open-vsix marketplace cli (ovsx)
         run: npm install -g ovsx
@@ -79,41 +79,30 @@ jobs:
 
       - name: get extension version
         run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+
       - name: create upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: ${{ env.VSIX_PATH }}
           name: ${{ env.VSIX_NAME }}
 
       - name: create github release
-        uses: actions/create-release@v1
-        id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.PACKAGE_VERSION }}
-          release_name: ${{ env.VSIX_NAME }}
-          body: See [CHANGE LOG](https://github.com/f5devcentral/vscode-f5-chariot/blob/main/README.md) for details.
+          name: ${{ env.VSIX_NAME }}
+          body: See [CHANGE LOG](https://github.com/f5devcentral/vscode-f5-chariot/blob/main/CHANGELOG.md) for details.
           draft: false
           prerelease: false
-      
-      - name: upload releases
-        uses: actions/upload-release-asset@v1
+          files: ${{ env.VSIX_PATH }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_TOKEN: ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.VSIX_PATH }}
-          asset_name: ${{ env.VSIX_NAME }}
-          asset_content_type: application/zip
 
       - name: publish to marketplace
         run: vsce publish -i ${{ env.VSIX_PATH }} -p ${{ secrets.MARKETPLACE_PUBLISH_KEY }}
 
       - name: publish to open-vsix
         run: ovsx publish ${{ env.VSIX_PATH }} -p ${{ secrets.OVSX_PAT }}
-
 
 
 # good example of action workflow for publishing an extension
