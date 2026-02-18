@@ -1,5 +1,9 @@
 # converted ts
 out
+dist
+
+# debug logs
+test-debug.log
 
 # node/modules install directory
 ./node_modules/

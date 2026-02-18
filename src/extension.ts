@@ -24,19 +24,16 @@ import {
 } from 'vscode';
 
 import {
-    displayJsonInEditor,
     displayJsonInEditor2,
     getEditorText
 } from './util';
 
 import Logger from 'f5-conx-core/dist/logger';
 
-import { EventEmitter } from 'events';
-import { loadTeemKey } from './loadTeem';
+import * as tmos from 'tmos-converter';
 
-// import main acc function (no TS types available at this time)
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const acc = require('f5-automation-config-converter/src/main');
+const tmosPackageJson = require('tmos-converter/package.json');
 
 const logger = new Logger('F5_CHARIOT_LOG_LEVEL');
 logger.console = false;
@@ -55,18 +52,6 @@ logger.output = function (log: string) {
     f5OutputChannel.appendLine(log);
 };
 
-const eventer = new EventEmitter()
-    .on('log-http-request', msg => logger.httpRequest(msg))
-    .on('log-http-response', msg => logger.httpResponse(msg))
-    .on('log-debug', msg => logger.debug(msg))
-    .on('log-info', msg => logger.info(msg))
-    .on('log-warn', msg => logger.warn(msg))
-    .on('log-error', msg => logger.error(msg));
-
-// import package details for logging
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const accPackageJson = require('f5-automation-config-converter/package.json');
-
 export function activate(context: ExtensionContext) {
 
     // process.on('unhandledRejection', error => {
@@ -74,17 +59,13 @@ export function activate(context: ExtensionContext) {
     // });
 
 
-    // log core acc package details
-    logger.info(`ACC Details: `, {
-        name: accPackageJson.name,
-        author: accPackageJson.author,
-        description: accPackageJson.description,
-        version: accPackageJson.version,
-        license: accPackageJson.license,
-        repository: accPackageJson.repository.url
+    // log core tmos-converter package details
+    logger.info(`TMOS Converter Details: `, {
+        name: tmosPackageJson.name,
+        description: tmosPackageJson.description,
+        version: tmosPackageJson.version,
+        license: tmosPackageJson.license
     });
-
-    loadTeemKey(context);
 
     context.subscriptions.push(commands.registerCommand('f5.chariot.convertAS3', async (editor) => {
 
@@ -95,7 +76,7 @@ export function activate(context: ExtensionContext) {
 
         return await window.withProgress({
             location: ProgressLocation.Notification,
-            title: `Converting to AS3 with ACC`,
+            title: `Converting to AS3`,
         }, async () => {
 
             return await getEditorText(editor)
@@ -109,15 +90,20 @@ export function activate(context: ExtensionContext) {
                         text = text.replace(/\r\n/g, '\n');
                     }
 
-                    // const { declaration, metaData } = await acc(text);
-                    const { declaration, metaData } = await acc.mainAPI(text)
-                        .catch((accErr: Error) => {
-                            logger.error('ACC parsing failed with', accErr);
-                            throw accErr;
+                    const result = await tmos.convertToAS3(text)
+                        .catch((err: Error) => {
+                            logger.error('TMOS conversion to AS3 failed with', err);
+                            throw err;
                         });
 
-                    // log all the metadata
-                    logger.info('ACC METADATA', metaData);
+                    const { declaration } = result;
+
+                    // log conversion metadata
+                    logger.info('AS3 Conversion Result', {
+                        iappSupported: result.iappSupported,
+                        unsupportedStats: result.unsupportedStats,
+                        keyClassicNotSupported: result.keyClassicNotSupported
+                    });
 
                     // display as3 output in editor
                     const convertedAs3editor = await displayJsonInEditor2(declaration);
@@ -150,7 +136,7 @@ export function activate(context: ExtensionContext) {
 
         return await window.withProgress({
             location: ProgressLocation.Notification,
-            title: `Converting to DO with ACC`,
+            title: `Converting to DO`,
         }, async () => {
 
             return await getEditorText(editor)
@@ -164,11 +150,12 @@ export function activate(context: ExtensionContext) {
                         text = text.replace(/\r\n/g, '\n');
                     }
 
-                    // const { declaration, metaData } = await acc(text);
-                    const { declaration, metaData } = await acc.mainAPI(text, { declarativeOnboarding: true });
+                    const result = tmos.convertToDO(text);
 
-                    // log all the metadata
-                    logger.info('ACC METADATA', metaData);
+                    const { declaration } = result;
+
+                    // log conversion result
+                    logger.info('DO Conversion completed');
 
                     // display as3 output in editor
                     const convertedDo = await displayJsonInEditor2(declaration);

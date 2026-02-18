@@ -8,6 +8,23 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ---
 
+## [2.0.0] - (02-17-2026)
+
+### Major Changes
+
+- Replaced f5-automation-config-converter (ACC) with new tmos-converter engine
+  - Cleaner TypeScript-based codebase with full type support
+  - Improved conversion accuracy and maintainability
+- Switched to esbuild bundling for smaller, faster extension
+- Removed TEEM telemetry integration
+
+### Technical
+
+- Extension now bundles all dependencies into a single file
+- Removed dependency on external ACC package
+
+---
+
 ## [1.22.0] - (12-11-2025)
 
 - ACC 1.126.0 release
