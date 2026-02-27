@@ -2,6 +2,9 @@
 out
 dist
 
+# vendored schema copied during build
+schema
+
 # debug logs
 test-debug.log
 
