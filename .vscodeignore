@@ -16,3 +16,5 @@ vsc-extension-quickstart.md
 .github/**
 # ignore node cpu profiling file
 *.cpuprofile
+# ignore tmos-converter tarball (bundled via esbuild)
+*.tgz

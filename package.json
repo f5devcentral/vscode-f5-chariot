@@ -79,7 +79,7 @@
 	},
 	"dependencies": {
 		"f5-conx-core": "^1.2.0",
-		"tmos-converter": "file:../tmos-atc-converter"
+		"tmos-converter": "file:tmos-converter-1.0.1.tgz"
 	},
 	"eslintConfig": {
 		"root": true,
